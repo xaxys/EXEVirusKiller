@@ -188,7 +188,7 @@
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.listBox1);
-            this.panel1.Location = new System.Drawing.Point(12, 237);
+            this.panel1.Location = new System.Drawing.Point(12, 234);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(413, 229);
             this.panel1.TabIndex = 14;
@@ -197,11 +197,11 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(13, 219);
+            this.label6.Location = new System.Drawing.Point(10, 219);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(161, 12);
+            this.label6.Size = new System.Drawing.Size(215, 12);
             this.label6.TabIndex = 13;
-            this.label6.Text = "GPLv3 Copyleft 2018 By xa.";
+            this.label6.Text = "GNU GPLv3 Copyright (C) 2018 By xa.";
             // 
             // pictureBox1
             // 
