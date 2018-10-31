@@ -151,6 +151,7 @@
             this.label2.Size = new System.Drawing.Size(53, 12);
             this.label2.TabIndex = 8;
             this.label2.Text = "正在扫描";
+            this.label2.Visible = false;
             // 
             // label3
             // 
@@ -220,7 +221,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(434, 251);
+            this.ClientSize = new System.Drawing.Size(434, 241);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.label4);

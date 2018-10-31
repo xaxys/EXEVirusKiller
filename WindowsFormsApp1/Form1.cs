@@ -25,11 +25,10 @@ namespace WindowsFormsApp1
             if (!Util.isRun)
             {
                 Util.SetState(checkBox1.Checked, checkBox2.Checked, checkBox3.Checked);
-                Util.isRun = true;
                 button2.Text = "停止扫描";
                 button2.BackColor = Util.huang;
-                label3.Show();
                 ShowListBox();
+                THIS.SwitchLabel(true);
 
                 listBox1.Items.Clear();
                 listBox1.Items.Add("开始查杀目录" + textBox1.Text);
@@ -39,7 +38,7 @@ namespace WindowsFormsApp1
                 thread.IsBackground = true;
                 thread.Start();
             }
-            else FinishCheck();
+            else Util.isRun = false;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -70,7 +69,7 @@ namespace WindowsFormsApp1
             {
                 label4.Text = Util.xia;
                 panel1.Show();
-                Height = Util.ShowHeight;
+                Height += Util.ChangeHeight;
             }
         }
 
@@ -80,7 +79,7 @@ namespace WindowsFormsApp1
             {
                 label4.Text = Util.zuo;
                 panel1.Hide();
-                Height = Util.HideHeight;
+                Height -= Util.ChangeHeight;
             }
         }
 
@@ -113,7 +112,6 @@ namespace WindowsFormsApp1
             }
             else
             {
-                Util.isRun = false;
                 button2.Text = "开始查杀";
                 CheckPath();
             }
@@ -186,11 +184,11 @@ namespace WindowsFormsApp1
 
         private void StartSearch()
         {
-            SetProgressBar(0);
-            THIS.SwitchLabel(true);
+            Util.isRun = true;
             Util.SearchDir(textBox1.Text, 100);
             AddList("查杀完成！搞定了" + Util.VirusNum + "个病毒");
             THIS.SwitchLabel(false);
+            Util.isRun = false;
             FinishCheck();
             SetProgressBar(0);
         }

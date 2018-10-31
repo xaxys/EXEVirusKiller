@@ -10,3 +10,4 @@ D:\C#\WindowsFormsApp1\WindowsFormsApp1\obj\Release\WindowsFormsApp1.exe.manifes
 D:\C#\WindowsFormsApp1\WindowsFormsApp1\obj\Release\WindowsFormsApp1.application
 D:\C#\WindowsFormsApp1\WindowsFormsApp1\obj\Release\WindowsFormsApp1.exe
 D:\C#\WindowsFormsApp1\WindowsFormsApp1\obj\Release\WindowsFormsApp1.pdb
+D:\C#\WindowsFormsApp1\WindowsFormsApp1\obj\Release\WindowsFormsApp1.csprojResolveAssemblyReference.cache

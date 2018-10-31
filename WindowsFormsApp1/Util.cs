@@ -10,9 +10,9 @@ namespace WindowsFormsApp1
     public static class Util
     {
         public static bool isRun;
-        public static bool SubFolder;
-        public static bool FixFolder;
-        public static bool HideSystemFolder;
+        private static bool SubFolder;
+        private static bool FixFolder;
+        private static bool HideSystemFolder;
         public static int VirusNum;
         private static double progress;
         public static double Progress
@@ -26,7 +26,7 @@ namespace WindowsFormsApp1
             }
         }
 
-        public static List<string> SystemFolder = new List<string>()
+        private static List<string> SystemFolder = new List<string>()
         {
             "System Volume Information",
             "$RECYCLE.BIN",
@@ -34,20 +34,30 @@ namespace WindowsFormsApp1
             "LOST.DIR"
         };
 
+        private static string[] ExtensionList =
+        {
+            "*.exe",
+            "*.scr"
+        };
+
         public static string zuo = "3";
         public static string xia = "6";
         public static Color huang = Color.FromArgb(255, 255, 128);
         public static Color hong = Color.FromArgb(255, 128, 128);
         public static Color lv = Color.FromArgb(128, 255, 128);
-        public static int ShowHeight = 520;
-        public static int HideHeight = 280;
+        public static int ChangeHeight = 240;
+        //public static int ShowHeight = 520;
+        //public static int HideHeight = 280;
+
+        public static char Separator = Path.DirectorySeparatorChar;
+
         public static void SetState(bool a, bool b, bool c)
         {
             SubFolder = a;
             FixFolder = b;
             HideSystemFolder = c;
             VirusNum = 0;
-            progress = 0;
+            Progress = 0;
         }
 
         public static FileAttributes NormalDir = FileAttributes.Normal | FileAttributes.Directory;
@@ -69,17 +79,36 @@ namespace WindowsFormsApp1
         public static void SearchDir(string path, double k)
         {
             Form1.THIS.SetLabel3(path);
-            if (!path.EndsWith("\\")) path += '\\';
+            if (!path.EndsWith(Separator.ToString())) path += Separator;
 
             HashSet<string> list = new HashSet<string>();
             DirectoryInfo theFolder = new DirectoryInfo(path);
+
             DirectoryInfo[] theFolders = null;
             try { theFolders = theFolder.GetDirectories(); }
             catch (Exception e) { Form1.THIS.AddList(e); return; }
 
-            void CheckDir(string Extension)
+            double ProgressNow = Progress;
+            double step = 1.00 / theFolders.Length * k;
+            int i = 1;
+
+            //遍历文件夹及子文件夹
+            foreach(DirectoryInfo NextDir in theFolders)
             {
-                FileInfo[] theFiles = null;
+                if (!isRun) break;
+                if (FixFolder && NextDir.Attributes.IsHidden())
+                {
+                    try { NextDir.Attributes = NormalDir; }
+                    catch (Exception e) { Form1.THIS.AddList(e); }
+                }
+                list.Add(NextDir.Name);
+                if (SubFolder) SearchDir(path + NextDir.Name + '\\', step);
+                if (step > 1e-3) Progress = ProgressNow + step * i++;
+            }
+
+            //查杀病毒文件
+            FileInfo[] theFiles = null;
+            foreach (string Extension in ExtensionList) {
                 try { theFiles = theFolder.GetFiles(Extension, SearchOption.TopDirectoryOnly); }
                 catch (Exception e) { Form1.THIS.AddList(e); return; }
                 foreach (FileInfo NextFile in theFiles)
@@ -97,26 +126,6 @@ namespace WindowsFormsApp1
                     }
                 }
             }
-
-            double ProgressNow = Progress;
-            double step = 1.00 / theFolders.Length * k;
-            int i = 1;
-
-            foreach(DirectoryInfo NextDir in theFolders)
-            {
-                if (!isRun) break;
-                if (FixFolder && NextDir.Attributes.IsHidden())
-                {
-                    try { NextDir.Attributes = NormalDir; }
-                    catch (Exception e) { Form1.THIS.AddList(e); }
-                }
-                list.Add(NextDir.Name);
-                if (SubFolder) SearchDir(path + NextDir.Name + '\\', step);
-                if (step > 1e-3) Progress = ProgressNow + step * i++;
-            }
-
-            CheckDir(".exe");
-            CheckDir(".scr");
 
             if (HideSystemFolder && isRun)
             {
