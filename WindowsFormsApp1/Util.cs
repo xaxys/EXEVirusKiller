@@ -12,7 +12,7 @@ namespace WindowsFormsApp1
         public static bool isRun;
         private static bool SubFolder;
         private static bool FixFolder;
-        private static bool HideSystemFolder;
+        private static bool FuzzyCheck;
         public static int VirusNum;
         private static double progress;
         public static double Progress
@@ -26,7 +26,7 @@ namespace WindowsFormsApp1
             }
         }
 
-        private static List<string> SystemFolder = new List<string>()
+        public static List<string> SystemFolder = new List<string>()
         {
             "System Volume Information",
             "$RECYCLE.BIN",
@@ -34,7 +34,7 @@ namespace WindowsFormsApp1
             "LOST.DIR"
         };
 
-        private static string[] ExtensionList =
+        public static string[] ExtensionList =
         {
             "*.exe",
             "*.scr"
@@ -55,7 +55,7 @@ namespace WindowsFormsApp1
         {
             SubFolder = a;
             FixFolder = b;
-            HideSystemFolder = c;
+            FuzzyCheck = c;
             VirusNum = 0;
             Progress = 0;
         }
@@ -68,11 +68,16 @@ namespace WindowsFormsApp1
             return (attr & FileAttributes.Hidden) == FileAttributes.Hidden;
         }
 
+        public static bool IsSystem(this FileAttributes attr)
+        {
+            return (attr & FileAttributes.System) == FileAttributes.System;
+        }
+
         private static void AddDeleteInfo(string s)
         {
             if (VirusNum == 0)
                 Form1.THIS.AddList("已删除：");
-            Form1.THIS.AddList(">>> " + s);
+            Form1.THIS.AddList("> " + s);
             VirusNum++;
         }
 
@@ -101,7 +106,8 @@ namespace WindowsFormsApp1
                     try { NextDir.Attributes = NormalDir; }
                     catch (Exception e) { Form1.THIS.AddList(e); }
                 }
-                list.Add(NextDir.Name);
+                if (FuzzyCheck || NextDir.Attributes.IsSystem())
+                    list.Add(NextDir.Name);
                 if (SubFolder) SearchDir(path + NextDir.Name + '\\', step);
                 if (step > 1e-3) Progress = ProgressNow + step * i++;
             }
@@ -116,18 +122,18 @@ namespace WindowsFormsApp1
                     string s = NextFile.Name.Substring(0, NextFile.Name.Length - 4).TrimEnd();
                     if (list.Contains(s))
                     {
-                        NextFile.Delete();
                         AddDeleteInfo(NextFile.FullName);
+                        //NextFile.Delete();
                         if (!FixFolder)
                         {
-                            try { File.SetAttributes(path + s, NormalDir); }
+                            try { /*File.SetAttributes(path + s, NormalDir);*/ }
                             catch (Exception e) { Form1.THIS.AddList(e); }
                         }
                     }
                 }
             }
 
-            if (HideSystemFolder && isRun)
+            if (isRun)
             {
                 foreach (string theName in SystemFolder)
                 {

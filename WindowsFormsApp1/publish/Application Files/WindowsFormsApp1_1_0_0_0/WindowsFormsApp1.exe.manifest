@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="WindowsFormsApp1.exe" version="1.0.0.0" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity name="WindowsFormsApp1.exe" version="1.0.0.0" publicKeyToken="c1e0625b8e79860f" language="neutral" processorArchitecture="msil" type="win32" />
   <description asmv2:iconFile="favicon.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
@@ -48,23 +48,18 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
-      <assemblyIdentity name="System.Data.Entity" version="3.5.0.0" publicKeyToken="b77a5c561934e089" language="neutral" processorArchitecture="msil" />
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
       <assemblyIdentity name="WindowsBase" version="3.0.0.0" publicKeyToken="31bf3856ad364e35" language="neutral" processorArchitecture="msil" />
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WindowsFormsApp1.exe" size="131072">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WindowsFormsApp1.exe" size="132016">
       <assemblyIdentity name="WindowsFormsApp1" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>jZfG/bXDqjDSIuuu3IK+JcnEOig=</dsig:DigestValue>
+        <dsig:DigestValue>76/qggNtdCTo+fdiP0o56B+3FWM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -94,4 +89,4 @@
       <!--<supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />-->
     </application>
   </compatibility>
-</asmv1:assembly>
+<publisherIdentity name="CN=LENOVO-Y40P80\Admin" issuerKeyHash="634cdd3c6407be05ff1e6cc6d7fb0b01c981a3ff" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>8hl/kz/Byhq01oO45QcW+XVnRPM=</DigestValue></Reference></SignedInfo><SignatureValue>DZB2scAHITD2WGVsAS2J1eKsayRzAy7Y5hL43xPYJG99YB6MYV4eguHjqT5q/NuQr/2B0Yq8PUHPonew52ROoeVMXl3iR+RmOaQUdJPDOHCcC0WerL2UGHCD313yrybg+rShhJiu9/HXp7aviEBcF3DfpNH+VFl9Gg2/AlWRDX4=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>tWwB1U6AdaSjJuTuuWBSvPm96hDFJwfZeOPBwhfJ/qmcSfD67nB1viDkXRyBF8MEZz4LoQ+EzsqrLkd0Ka3oeYb9JYUvNp8X/E8+OZtW4ou2eZKqhEv21eNF/bxpwz1S1JH5lEx7F01EWWsK6fB4aO8h2TrMUEjlM7GafEpjmHU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="f3446775f91607e5b883d6b41acac13f937f19f2" Description="" Url=""><as:assemblyIdentity name="WindowsFormsApp1.exe" version="1.0.0.0" publicKeyToken="c1e0625b8e79860f" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=LENOVO-Y40P80\Admin</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>G2ur63X3NB24nX3ljfDU/F0MQ7A=</DigestValue></Reference></SignedInfo><SignatureValue>l4pFSi++h+crmeQpcxNQ774wGL57QF790qMntW3DmimTwhdWT2HXIH+2J66VCeptgYnBG4Db83MeQQ5VwH1YqSVjgsIoBr7S96cRLk2fs3FCeFttwPREswkvifSqOtT5nvsbCn2gmll/82apf2lKMpQKwQ9NGZ3N/3gFJLxOuhw=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>tWwB1U6AdaSjJuTuuWBSvPm96hDFJwfZeOPBwhfJ/qmcSfD67nB1viDkXRyBF8MEZz4LoQ+EzsqrLkd0Ka3oeYb9JYUvNp8X/E8+OZtW4ou2eZKqhEv21eNF/bxpwz1S1JH5lEx7F01EWWsK6fB4aO8h2TrMUEjlM7GafEpjmHU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB5TCCAU6gAwIBAgIQbXVtAmTlAqxCjSD6xb5R9DANBgkqhkiG9w0BAQUFADAxMS8wLQYDVQQDHiYATABFAE4ATwBWAE8ALQBZADQAMABQADgAMABcAEEAZABtAGkAbjAeFw0xODEwMzExMDUzNTBaFw0xOTEwMzExNjUzNTBaMDExLzAtBgNVBAMeJgBMAEUATgBPAFYATwAtAFkANAAwAFAAOAAwAFwAQQBkAG0AaQBuMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC1bAHVToB1pKMm5O65YFK8+b3qEMUnB9l448HCF8n+qZxJ8PrucHW+IORdHIEXwwRnPguhD4TOyqsuR3Qpreh5hv0lhS82nxf8Tz45m1bii7Z5kqqES/bV40X9vGnDPVLUkfmUTHsXTURZawrp8Hho7yHZOsxQSOUzsZp8SmOYdQIDAQABMA0GCSqGSIb3DQEBBQUAA4GBAKVkykppfR5b3bpQ+H1BHJmOlDJCx1MfcLojfyxdfuY2Tu5YLV5gDFLzPaCzn+h/PvcBDdK1IdjaF2O0nxaHyHVWJO1WL17pkqTkhqBw0vx5e/rYtx/f3ZhrlFcAtH05EpVf2kduvMALD7vcUXMDfWFGcSmMWmkM+wMyLVHb8QtC</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>

@@ -18,6 +18,7 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
             THIS = this;
+            notifyIcon1.Icon = Icon;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -173,7 +174,7 @@ namespace WindowsFormsApp1
                     if (label3.Disposing || label3.IsDisposed) return;
                 }
                 SwitchLabelCallback d = new SwitchLabelCallback(SwitchLabel);
-                progressBar1.Invoke(d, new object[] { f });
+                label2.Invoke(d, new object[] { f });
             }
             else
             {
@@ -191,6 +192,116 @@ namespace WindowsFormsApp1
             Util.isRun = false;
             FinishCheck();
             SetProgressBar(0);
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            try
+            {
+                if (m.Msg == USBDevice.WM_DEVICECHANGE)
+                {
+                    switch (m.WParam.ToInt32())
+                    {
+                        case USBDevice.WM_DEVICECHANGE:
+                            break;
+                        case USBDevice.DBT_DEVICEARRIVAL://U盘插入
+                            if (自动扫描U盘ToolStripMenuItem.Checked)
+                                USBDevice.CheckDevice();
+                            break;
+                        case USBDevice.DBT_CONFIGCHANGECANCELED:
+                            break;
+                        case USBDevice.DBT_CONFIGCHANGED:
+                            break;
+                        case USBDevice.DBT_CUSTOMEVENT:
+                            break;
+                        case USBDevice.DBT_DEVICEQUERYREMOVE:
+                            break;
+                        case USBDevice.DBT_DEVICEQUERYREMOVEFAILED:
+                            break;
+                        case USBDevice.DBT_DEVICEREMOVECOMPLETE: //U盘卸载
+                            USBDevice.RemoveDevice();
+                            break;
+                        case USBDevice.DBT_DEVICEREMOVEPENDING:
+                            break;
+                        case USBDevice.DBT_DEVICETYPESPECIFIC:
+                            break;
+                        case USBDevice.DBT_DEVNODES_CHANGED:
+                            break;
+                        case USBDevice.DBT_QUERYCHANGECONFIG:
+                            break;
+                        case USBDevice.DBT_USERDEFINED:
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            base.WndProc(ref m);
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)//当用户点击窗体右上角X按钮或(Alt + F4)时 发生          
+            {
+                e.Cancel = true;
+                ShowInTaskbar = false;
+                Hide();
+            }
+        }
+
+        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                contextMenuStrip1.Show();
+            }
+
+            if (e.Button == MouseButtons.Left)
+            {
+                ShowInTaskbar = true;
+                Show();
+                WindowState = FormWindowState.Normal;
+            }
+        }
+
+        private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        public void AddMenuItem(ToolStripMenuItem item)
+        {
+            if (contextMenuStrip1.Items.Count <= 3)
+                aToolStripMenuItem.Visible = true;
+            contextMenuStrip1.Items.Insert(0, item);
+        }
+
+        public void RemoveMenuItem(ToolStripMenuItem item)
+        {
+            contextMenuStrip1.Items.Remove(item);
+            if (contextMenuStrip1.Items.Count <= 3)
+                aToolStripMenuItem.Visible = false;
+        }
+
+        private void 自动扫描U盘ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (自动扫描U盘ToolStripMenuItem.Checked)
+                自动扫描U盘ToolStripMenuItem.Checked = false;
+            else 自动扫描U盘ToolStripMenuItem.Checked = true;
+        }
+
+        private void checkBox3_MouseHover(object sender, EventArgs e)
+        {
+            ToolTip toolTip1 = new ToolTip();
+            toolTip1.AutoPopDelay = 5000;//提示信息的可见时间
+            toolTip1.InitialDelay = 500;//事件触发多久后出现提示
+            toolTip1.ReshowDelay = 500;//指针从一个控件移向另一个控件时，经过多久才会显示下一个提示框
+            toolTip1.ShowAlways = true;//是否显示提示框
+            toolTip1.SetToolTip(checkBox3, "增大变种病毒能力，但小概率会误伤正常文件");
         }
     }
 }

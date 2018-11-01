@@ -6,8 +6,3 @@ D:\C#\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Re
 D:\C#\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.GenerateResource.Cache
 D:\C#\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
 D:\C#\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
-D:\C#\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.manifest
-D:\C#\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.application
-D:\C#\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.TrustInfo.xml
-D:\C#\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe.manifest
-D:\C#\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.application
