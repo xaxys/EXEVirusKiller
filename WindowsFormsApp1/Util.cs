@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace WindowsFormsApp1
 {
@@ -46,6 +47,8 @@ namespace WindowsFormsApp1
         public static Color hong = Color.FromArgb(255, 128, 128);
         public static Color lv = Color.FromArgb(128, 255, 128);
         public static int ChangeHeight = 240;
+        public static string MainThread = "主线程";
+        public static string CheckThread = "查杀";
         //public static int ShowHeight = 520;
         //public static int HideHeight = 280;
 
@@ -78,6 +81,8 @@ namespace WindowsFormsApp1
             if (VirusNum == 0)
                 Form1.THIS.AddList("已删除：");
             Form1.THIS.AddList("> " + s);
+            Logger.Info(Thread.CurrentThread, CheckThread, "删除" + s);
+            Logger.Info(Thread.CurrentThread, "删除列表", s);
             VirusNum++;
         }
 
@@ -123,10 +128,10 @@ namespace WindowsFormsApp1
                     if (list.Contains(s))
                     {
                         AddDeleteInfo(NextFile.FullName);
-                        //NextFile.Delete();
+                        NextFile.Delete();
                         if (!FixFolder)
                         {
-                            try { /*File.SetAttributes(path + s, NormalDir);*/ }
+                            try { File.SetAttributes(path + s, NormalDir); }
                             catch (Exception e) { Form1.THIS.AddList(e); }
                         }
                     }

@@ -14,6 +14,7 @@ namespace WindowsFormsApp1
     public partial class Form1 : Form
     {
         public static Form1 THIS = null;
+        public static Form2 form2 = null;
         public Form1()
         {
             InitializeComponent();
@@ -35,7 +36,7 @@ namespace WindowsFormsApp1
                 listBox1.Items.Add("开始查杀目录" + textBox1.Text);
 
                 Thread thread = new Thread(new ThreadStart(StartSearch));
-                thread.Name = "查杀";
+                thread.Name = "主查杀线程";
                 thread.IsBackground = true;
                 thread.Start();
             }
@@ -138,6 +139,11 @@ namespace WindowsFormsApp1
             {
                 while (!listBox1.IsHandleCreated)
                     if (listBox1.Disposing || listBox1.IsDisposed) return;
+
+                if (obj is Exception)
+                {
+                    Logger.Warn(Thread.CurrentThread, Util.CheckThread, (Exception)obj);
+                }
                 AddListCallback d = new AddListCallback(AddList);
                 listBox1.Invoke(d, obj);
             }
@@ -185,9 +191,11 @@ namespace WindowsFormsApp1
 
         private void StartSearch()
         {
+            Logger.Info(Thread.CurrentThread, Util.CheckThread, "开始查杀" + textBox1.Text);
             Util.isRun = true;
             Util.SearchDir(textBox1.Text, 100);
             AddList("查杀完成！搞定了" + Util.VirusNum + "个病毒");
+            Logger.Info(Thread.CurrentThread, Util.CheckThread, "查杀完成！搞定了" + Util.VirusNum + "个病毒");
             THIS.SwitchLabel(false);
             Util.isRun = false;
             FinishCheck();
@@ -206,7 +214,10 @@ namespace WindowsFormsApp1
                             break;
                         case USBDevice.DBT_DEVICEARRIVAL://U盘插入
                             if (自动扫描U盘ToolStripMenuItem.Checked)
+                            {
                                 USBDevice.CheckDevice();
+                                Logger.Info(Thread.CurrentThread, Util.MainThread, "检测到U盘已插入");
+                            }
                             break;
                         case USBDevice.DBT_CONFIGCHANGECANCELED:
                             break;
@@ -220,6 +231,7 @@ namespace WindowsFormsApp1
                             break;
                         case USBDevice.DBT_DEVICEREMOVECOMPLETE: //U盘卸载
                             USBDevice.RemoveDevice();
+                            Logger.Info(Thread.CurrentThread, Util.MainThread, "检测到U盘已卸载");
                             break;
                         case USBDevice.DBT_DEVICEREMOVEPENDING:
                             break;
@@ -247,6 +259,7 @@ namespace WindowsFormsApp1
         {
             if (e.CloseReason == CloseReason.UserClosing)//当用户点击窗体右上角X按钮或(Alt + F4)时 发生          
             {
+                Logger.Info(Thread.CurrentThread, Util.MainThread, "主窗体关闭");
                 e.Cancel = true;
                 ShowInTaskbar = false;
                 Hide();
@@ -275,7 +288,7 @@ namespace WindowsFormsApp1
 
         public void AddMenuItem(ToolStripMenuItem item)
         {
-            if (contextMenuStrip1.Items.Count <= 3)
+            if (contextMenuStrip1.Items.Count <= 4)
                 aToolStripMenuItem.Visible = true;
             contextMenuStrip1.Items.Insert(0, item);
         }
@@ -283,7 +296,7 @@ namespace WindowsFormsApp1
         public void RemoveMenuItem(ToolStripMenuItem item)
         {
             contextMenuStrip1.Items.Remove(item);
-            if (contextMenuStrip1.Items.Count <= 3)
+            if (contextMenuStrip1.Items.Count <= 4)
                 aToolStripMenuItem.Visible = false;
         }
 
@@ -301,7 +314,21 @@ namespace WindowsFormsApp1
             toolTip1.InitialDelay = 500;//事件触发多久后出现提示
             toolTip1.ReshowDelay = 500;//指针从一个控件移向另一个控件时，经过多久才会显示下一个提示框
             toolTip1.ShowAlways = true;//是否显示提示框
-            toolTip1.SetToolTip(checkBox3, "增大变种病毒能力，但小概率会误伤正常文件");
+            toolTip1.SetToolTip(checkBox3, "增大识别变种病毒能力，但小概率会误伤正常文件");
+        }
+
+        private void 查看日志信息ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (form2 == null)
+            {
+                form2 = new Form2();
+                form2.Show();
+            }
+            else
+            {
+                form2.RefreshForm2();
+                form2.Show();
+            }
         }
     }
 }

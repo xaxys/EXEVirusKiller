@@ -87,19 +87,28 @@ namespace WindowsFormsApp1
             VirusNum = 0;
 
             Thread thread = new Thread(new ThreadStart(StartSearch));
-            thread.Name = "查杀" + Name;
+            thread.Name = Name + "查杀线程";
             thread.IsBackground = true;
             thread.Start();
         }
 
+        delegate void SetItemTextCallback(string s);
+        public void SetItemText(string s)
+        {
+            Item.Text = s;
+        }
+
         private void StartSearch()
         {
+            Logger.Info(Thread.CurrentThread, Caption, "开始自动查杀" + Name);
             Item.Text = Caption + " [正在扫描]";
             if (!Util.isRun) Form1.THIS.AddList("开始自动查杀" + Name);
             SearchDir(RootDir.FullName);
+            Logger.Info(Thread.CurrentThread, Caption, Name + "查杀完成！搞定了" + VirusNum + "个病毒");
             if (!Util.isRun) Form1.THIS.AddList(Name + "查杀完成！搞定了" + VirusNum + "个病毒");
             isRun = false;
-            Item.Text = Caption + " [已扫描]";
+            SetItemTextCallback d = new SetItemTextCallback(SetItemText);
+            Form1.THIS.Invoke(d, new object[] { Caption + " [已扫描]" });
         }
         public void SearchDir(string path)
         {
@@ -109,7 +118,10 @@ namespace WindowsFormsApp1
             DirectoryInfo theFolder = new DirectoryInfo(path);
             DirectoryInfo[] theFolders = null;
             try { theFolders = theFolder.GetDirectories(); }
-            catch { return; }
+            catch (Exception e) {
+                Logger.Warn(Thread.CurrentThread, Caption, e);
+                return;
+            }
 
             //遍历文件夹及子文件夹
             foreach (DirectoryInfo NextDir in theFolders)
@@ -124,7 +136,11 @@ namespace WindowsFormsApp1
             foreach (string Extension in Util.ExtensionList)
             {
                 try { theFiles = theFolder.GetFiles(Extension, SearchOption.TopDirectoryOnly); }
-                catch { return; }
+                catch (Exception e)
+                {
+                    Logger.Warn(Thread.CurrentThread, Caption, e);
+                    return;
+                }
                 foreach (FileInfo NextFile in theFiles)
                 {
                     string s = NextFile.Name.Substring(0, NextFile.Name.Length - 4).TrimEnd();
@@ -133,7 +149,10 @@ namespace WindowsFormsApp1
                         AddDeleteInfo(NextFile.FullName);
                         NextFile.Delete();
                         try { File.SetAttributes(path + s, Util.NormalDir); }
-                        catch { }
+                        catch (Exception e)
+                        {
+                            Logger.Warn(Thread.CurrentThread, Caption, e);
+                        }
                     }
                 }
             }
@@ -142,7 +161,10 @@ namespace WindowsFormsApp1
             {
                 if (Directory.Exists(path + theName))
                     try { File.SetAttributes(path + theName, Util.SystemHiddenDir); }
-                    catch { }
+                    catch (Exception e)
+                    {
+                        Logger.Warn(Thread.CurrentThread, Caption, e);
+                    }
             }
         }
         private void AddDeleteInfo(string s)
@@ -150,6 +172,8 @@ namespace WindowsFormsApp1
             if (VirusNum == 0)
                 Form1.THIS.AddList(Name + "已删除：");
             Form1.THIS.AddList("> " + s);
+            Logger.Info(Thread.CurrentThread, Caption, "删除" + s);
+            Logger.Info(Thread.CurrentThread, "删除列表", s);
             VirusNum++;
         }
     }
