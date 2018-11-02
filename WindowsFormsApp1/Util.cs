@@ -48,10 +48,7 @@ namespace WindowsFormsApp1
         public static Color lv = Color.FromArgb(128, 255, 128);
         public static int ChangeHeight = 240;
         public static string MainThread = "主线程";
-        public static string CheckThread = "查杀";
-        //public static int ShowHeight = 520;
-        //public static int HideHeight = 280;
-
+        public static string CheckThread = "主查杀线程";
         public static char Separator = Path.DirectorySeparatorChar;
 
         public static void SetState(bool a, bool b, bool c)
@@ -76,13 +73,35 @@ namespace WindowsFormsApp1
             return (attr & FileAttributes.System) == FileAttributes.System;
         }
 
+        public static void Add(this StringBuilder Str, string s)
+        {
+            Str.Append(s + Environment.NewLine);
+        }
+        public static bool Include(this List<USBDevice> list, DriveInfo drive)
+        {
+            foreach (USBDevice device in list)
+            {
+                if (device.Name == drive.Name) return true;
+            }
+            return false;
+        }
+
+        public static USBDevice GetUSBDevice(this List<USBDevice> list, string Caption)
+        {
+            foreach (USBDevice device in list)
+            {
+                if (device.Caption == Caption) return device;
+            }
+            return null;
+        }
+
         private static void AddDeleteInfo(string s)
         {
             if (VirusNum == 0)
                 Form1.THIS.AddList("已删除：");
             Form1.THIS.AddList("> " + s);
-            Logger.Info(Thread.CurrentThread, CheckThread, "删除" + s);
-            Logger.Info(Thread.CurrentThread, "删除列表", s);
+            Logger.Info(CheckThread, "删除" + s);
+            Logger.Info("删除列表", s);
             VirusNum++;
         }
 

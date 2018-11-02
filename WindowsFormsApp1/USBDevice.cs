@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp1
 {
-    class USBDevice
+    public class USBDevice
     {
         public const int WM_DEVICECHANGE = 0x219;//U盘插入后，OS的底层会自动检测到，然后向应用程序发送“硬件设备状态改变“的消息
         public const int DBT_DEVICEARRIVAL = 0x8000;  //就是用来表示U盘可用的。一个设备或媒体已被插入一块，现在可用。
@@ -31,21 +31,12 @@ namespace WindowsFormsApp1
 
         public static List<USBDevice> DriveList = new List<USBDevice>();
 
-        public static bool Include(DriveInfo drive)
-        {
-            foreach (USBDevice device in DriveList)
-            {
-                if (device.Name == drive.Name) return true;
-            }
-            return false;
-        }
-
         public static void CheckDevice()
         {
             DriveInfo[] s = DriveInfo.GetDrives();
             foreach (DriveInfo drive in s)
             {
-                if (drive.DriveType == DriveType.Removable && !Include(drive))
+                if (drive.DriveType == DriveType.Removable && !DriveList.Include(drive))
                 {
                     DriveList.Add(new USBDevice(drive));
                 }
@@ -73,8 +64,7 @@ namespace WindowsFormsApp1
         public string Name;
         public DirectoryInfo RootDir;
         public ToolStripMenuItem Item;
-        private string Caption;
-        private bool isRun;
+        public string Caption;
         private int VirusNum;
 
         USBDevice(DriveInfo drive)
@@ -83,13 +73,20 @@ namespace WindowsFormsApp1
             RootDir = drive.RootDirectory;
             Caption = drive.VolumeLabel + "(" + drive.Name + ")";
             Item = new ToolStripMenuItem(Caption);
+            Item.Click += Item_Click;
             Form1.THIS.AddMenuItem(Item);
             VirusNum = 0;
+            if (Form1.THIS.自动扫描U盘) RunSearch();
+        }
 
-            Thread thread = new Thread(new ThreadStart(StartSearch));
-            thread.Name = Name + "查杀线程";
-            thread.IsBackground = true;
-            thread.Start();
+        private void Item_Click(object sender, EventArgs e)
+        {
+            if (sender is ToolStripMenuItem)
+            {
+                string s = ((ToolStripMenuItem)sender).Text;
+                USBDevice device = DriveList.GetUSBDevice(s);
+                if (device != null) device.RunSearch();
+            }
         }
 
         delegate void SetItemTextCallback(string s);
@@ -98,17 +95,26 @@ namespace WindowsFormsApp1
             Item.Text = s;
         }
 
+        public void RunSearch()
+        {
+            Logger.Info(Util.MainThread, "启动" + Name + "查杀线程");
+            Thread thread = new Thread(new ThreadStart(StartSearch));
+            thread.Name = Name + "查杀线程";
+            thread.IsBackground = true;
+            thread.Start();
+        }
+
         private void StartSearch()
         {
-            Logger.Info(Thread.CurrentThread, Caption, "开始自动查杀" + Name);
-            Item.Text = Caption + " [正在扫描]";
+            SetItemTextCallback d = new SetItemTextCallback(SetItemText);
+            Logger.Info(Caption, "开始自动查杀" + Name);
+            Form1.THIS.Invoke(d, new object[] { Caption + " [正在扫描]" });
             if (!Util.isRun) Form1.THIS.AddList("开始自动查杀" + Name);
             SearchDir(RootDir.FullName);
-            Logger.Info(Thread.CurrentThread, Caption, Name + "查杀完成！搞定了" + VirusNum + "个病毒");
+            Logger.Info(Caption, Name + "查杀完成！搞定了" + VirusNum + "个病毒");
             if (!Util.isRun) Form1.THIS.AddList(Name + "查杀完成！搞定了" + VirusNum + "个病毒");
-            isRun = false;
-            SetItemTextCallback d = new SetItemTextCallback(SetItemText);
             Form1.THIS.Invoke(d, new object[] { Caption + " [已扫描]" });
+            Form1.THIS.ShowTips(VirusNum, Name);
         }
         public void SearchDir(string path)
         {
@@ -119,7 +125,7 @@ namespace WindowsFormsApp1
             DirectoryInfo[] theFolders = null;
             try { theFolders = theFolder.GetDirectories(); }
             catch (Exception e) {
-                Logger.Warn(Thread.CurrentThread, Caption, e);
+                Logger.Warn(Caption, e);
                 return;
             }
 
@@ -138,7 +144,7 @@ namespace WindowsFormsApp1
                 try { theFiles = theFolder.GetFiles(Extension, SearchOption.TopDirectoryOnly); }
                 catch (Exception e)
                 {
-                    Logger.Warn(Thread.CurrentThread, Caption, e);
+                    Logger.Warn(Caption, e);
                     return;
                 }
                 foreach (FileInfo NextFile in theFiles)
@@ -151,7 +157,7 @@ namespace WindowsFormsApp1
                         try { File.SetAttributes(path + s, Util.NormalDir); }
                         catch (Exception e)
                         {
-                            Logger.Warn(Thread.CurrentThread, Caption, e);
+                            Logger.Warn(Caption, e);
                         }
                     }
                 }
@@ -163,7 +169,7 @@ namespace WindowsFormsApp1
                     try { File.SetAttributes(path + theName, Util.SystemHiddenDir); }
                     catch (Exception e)
                     {
-                        Logger.Warn(Thread.CurrentThread, Caption, e);
+                        Logger.Warn(Caption, e);
                     }
             }
         }
@@ -172,9 +178,10 @@ namespace WindowsFormsApp1
             if (VirusNum == 0)
                 Form1.THIS.AddList(Name + "已删除：");
             Form1.THIS.AddList("> " + s);
-            Logger.Info(Thread.CurrentThread, Caption, "删除" + s);
-            Logger.Info(Thread.CurrentThread, "删除列表", s);
+            Logger.Info(Caption, "删除" + s);
+            Logger.Info("删除列表", s);
             VirusNum++;
         }
+
     }
 }

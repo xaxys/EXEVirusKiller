@@ -8,16 +8,16 @@ namespace WindowsFormsApp1
 {
     class Logger
     {
-        public static SortedList<string, List<string>> list = new SortedList<string, List<string>>();
-        public static void Warn(Thread th, string key, Exception e)
+        public static SortedList<string, StringBuilder> list = new SortedList<string, StringBuilder>();
+        public static void Warn(string key, Exception e)
         {
             if (!list.ContainsKey(key))
             {
-                list.Add(key, new List<string>());
+                list.Add(key, new StringBuilder());
                 if (Form1.form2 != null)
                     Form1.form2.InitList();
             }
-            string Str = String.Format("[{0:T}] [{1}/Warn]: {2}", DateTime.Now, th.Name, e.Message);
+            string Str = String.Format("[{0:T}] [{1}/Warn]: {2}",DateTime.Now, Thread.CurrentThread.Name, e.Message);
             list[key].Add(Str);
             list[key].Add("    > 异常对象：" + e.Source);
             list[key].Add("    > 调用堆栈：" + e.StackTrace.Trim());
@@ -30,15 +30,15 @@ namespace WindowsFormsApp1
                 Form1.form2.AddText("    > 触发方法：" + e.TargetSite);
             }
         }
-        public static void Info(Thread th, string key, string s)
+        public static void Info(string key, string s)
         {
             if (!list.ContainsKey(key))
             {
-                list.Add(key, new List<string>());
+                list.Add(key, new StringBuilder());
                 if (Form1.form2 != null)
                     Form1.form2.InitList();
             }
-            string Str = String.Format("[{0:T}] [{1}/Info]: {2}", DateTime.Now, th.Name, s);
+            string Str = String.Format("[{0:T}] [{1}/Info]: {2}", DateTime.Now, Thread.CurrentThread.Name, s);
             list[key].Add(Str);
             if (Form1.form2 != null && Form1.form2.Selected == key)
             {

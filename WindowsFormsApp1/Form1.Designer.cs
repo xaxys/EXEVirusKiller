@@ -49,9 +49,9 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.aToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
             this.自动扫描U盘ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.查看日志信息ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.查看日志信息ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -187,6 +187,7 @@
             this.listBox1.ItemHeight = 12;
             this.listBox1.Location = new System.Drawing.Point(0, 20);
             this.listBox1.Name = "listBox1";
+            this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.listBox1.Size = new System.Drawing.Size(413, 208);
             this.listBox1.TabIndex = 9;
             // 
@@ -228,12 +229,12 @@
             this.退出ToolStripMenuItem});
             this.contextMenuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 98);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(149, 76);
             // 
             // aToolStripMenuItem
             // 
             this.aToolStripMenuItem.Name = "aToolStripMenuItem";
-            this.aToolStripMenuItem.Size = new System.Drawing.Size(149, 6);
+            this.aToolStripMenuItem.Size = new System.Drawing.Size(145, 6);
             this.aToolStripMenuItem.Visible = false;
             // 
             // 自动扫描U盘ToolStripMenuItem
@@ -244,6 +245,13 @@
             this.自动扫描U盘ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.自动扫描U盘ToolStripMenuItem.Text = "自动扫描U盘";
             this.自动扫描U盘ToolStripMenuItem.Click += new System.EventHandler(this.自动扫描U盘ToolStripMenuItem_Click);
+            // 
+            // 查看日志信息ToolStripMenuItem
+            // 
+            this.查看日志信息ToolStripMenuItem.Name = "查看日志信息ToolStripMenuItem";
+            this.查看日志信息ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.查看日志信息ToolStripMenuItem.Text = "查看日志信息";
+            this.查看日志信息ToolStripMenuItem.Click += new System.EventHandler(this.查看日志信息ToolStripMenuItem_Click);
             // 
             // 退出ToolStripMenuItem
             // 
@@ -263,13 +271,6 @@
             this.pictureBox1.Size = new System.Drawing.Size(436, 61);
             this.pictureBox1.TabIndex = 11;
             this.pictureBox1.TabStop = false;
-            // 
-            // 查看日志信息ToolStripMenuItem
-            // 
-            this.查看日志信息ToolStripMenuItem.Name = "查看日志信息ToolStripMenuItem";
-            this.查看日志信息ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.查看日志信息ToolStripMenuItem.Text = "查看日志信息";
-            this.查看日志信息ToolStripMenuItem.Click += new System.EventHandler(this.查看日志信息ToolStripMenuItem_Click);
             // 
             // Form1
             // 

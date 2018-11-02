@@ -13,6 +13,11 @@ namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
+        public bool 自动扫描U盘
+        {
+            get { return 自动扫描U盘ToolStripMenuItem.Checked; }
+        }
+
         public static Form1 THIS = null;
         public static Form2 form2 = null;
         public Form1()
@@ -20,6 +25,7 @@ namespace WindowsFormsApp1
             InitializeComponent();
             THIS = this;
             notifyIcon1.Icon = Icon;
+            Thread.CurrentThread.Name = "主线程";
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -35,6 +41,7 @@ namespace WindowsFormsApp1
                 listBox1.Items.Clear();
                 listBox1.Items.Add("开始查杀目录" + textBox1.Text);
 
+                Logger.Info(Util.MainThread, "启动主查杀线程");
                 Thread thread = new Thread(new ThreadStart(StartSearch));
                 thread.Name = "主查杀线程";
                 thread.IsBackground = true;
@@ -124,8 +131,6 @@ namespace WindowsFormsApp1
         {
             if (label3.InvokeRequired)
             {
-                while (!label3.IsHandleCreated)
-                    if (label3.Disposing || label3.IsDisposed) return;
                 SetLabel3Callback d = new SetLabel3Callback(SetLabel3);
                 label3.Invoke(d, new object[] { s });
             }
@@ -137,12 +142,9 @@ namespace WindowsFormsApp1
         {
             if (listBox1.InvokeRequired)
             {
-                while (!listBox1.IsHandleCreated)
-                    if (listBox1.Disposing || listBox1.IsDisposed) return;
-
                 if (obj is Exception)
                 {
-                    Logger.Warn(Thread.CurrentThread, Util.CheckThread, (Exception)obj);
+                    Logger.Warn(Util.CheckThread, (Exception)obj);
                 }
                 AddListCallback d = new AddListCallback(AddList);
                 listBox1.Invoke(d, obj);
@@ -189,13 +191,33 @@ namespace WindowsFormsApp1
             }
         }
 
+        delegate void ShowTipsCallback(int num, string s);
+        public void ShowTips(int num, string s)
+        {
+            if (InvokeRequired)
+            {
+                ShowTipsCallback d = new ShowTipsCallback(ShowTips);
+                Invoke(d, new object[] { num, s });
+            }
+            else
+            {
+                if (num == 0)
+                {
+                    notifyIcon1.ShowBalloonTip(1000, s + "扫描完成", "没有发现病毒", ToolTipIcon.None);
+                }
+                else
+                {
+                    notifyIcon1.ShowBalloonTip(1000, s + "扫描完成", "清除了" + num + "个病毒", ToolTipIcon.Warning);
+                }
+            }
+        }
         private void StartSearch()
         {
-            Logger.Info(Thread.CurrentThread, Util.CheckThread, "开始查杀" + textBox1.Text);
+            Logger.Info(Util.CheckThread, "开始查杀" + textBox1.Text);
             Util.isRun = true;
             Util.SearchDir(textBox1.Text, 100);
             AddList("查杀完成！搞定了" + Util.VirusNum + "个病毒");
-            Logger.Info(Thread.CurrentThread, Util.CheckThread, "查杀完成！搞定了" + Util.VirusNum + "个病毒");
+            Logger.Info(Util.CheckThread, "查杀完成！搞定了" + Util.VirusNum + "个病毒");
             THIS.SwitchLabel(false);
             Util.isRun = false;
             FinishCheck();
@@ -213,11 +235,8 @@ namespace WindowsFormsApp1
                         case USBDevice.WM_DEVICECHANGE:
                             break;
                         case USBDevice.DBT_DEVICEARRIVAL://U盘插入
-                            if (自动扫描U盘ToolStripMenuItem.Checked)
-                            {
-                                USBDevice.CheckDevice();
-                                Logger.Info(Thread.CurrentThread, Util.MainThread, "检测到U盘已插入");
-                            }
+                            Logger.Info(Util.MainThread, "检测到U盘已插入");
+                            USBDevice.CheckDevice();
                             break;
                         case USBDevice.DBT_CONFIGCHANGECANCELED:
                             break;
@@ -231,7 +250,7 @@ namespace WindowsFormsApp1
                             break;
                         case USBDevice.DBT_DEVICEREMOVECOMPLETE: //U盘卸载
                             USBDevice.RemoveDevice();
-                            Logger.Info(Thread.CurrentThread, Util.MainThread, "检测到U盘已卸载");
+                            Logger.Info(Util.MainThread, "检测到U盘已卸载");
                             break;
                         case USBDevice.DBT_DEVICEREMOVEPENDING:
                             break;
@@ -259,7 +278,7 @@ namespace WindowsFormsApp1
         {
             if (e.CloseReason == CloseReason.UserClosing)//当用户点击窗体右上角X按钮或(Alt + F4)时 发生          
             {
-                Logger.Info(Thread.CurrentThread, Util.MainThread, "主窗体关闭");
+                Logger.Info(Util.MainThread, "主窗体关闭");
                 e.Cancel = true;
                 ShowInTaskbar = false;
                 Hide();
@@ -275,6 +294,7 @@ namespace WindowsFormsApp1
 
             if (e.Button == MouseButtons.Left)
             {
+                Logger.Info(Util.MainThread, "主窗体打开");
                 ShowInTaskbar = true;
                 Show();
                 WindowState = FormWindowState.Normal;
@@ -321,6 +341,7 @@ namespace WindowsFormsApp1
         {
             if (form2 == null)
             {
+                Logger.Info(Util.MainThread, "日志信息窗体打开");
                 form2 = new Form2();
                 form2.Show();
             }
