@@ -11,24 +11,31 @@ using System.Windows.Forms;
 
 namespace 文件夹病毒专杀工具
 {
-    public partial class Form2 : Form
+    public partial class LogForm : Form
     {
         delegate string SelectedCallback();
         public string Selected{
             get {
                 if (InvokeRequired)
                 {
-                    SelectedCallback d = new SelectedCallback(() => { return (string)listBox1.SelectedItem; });
+                    SelectedCallback d = () => (string)listBox1.SelectedItem;
                     return (string)Invoke(d);
                 }
                 else return (string)listBox1.SelectedItem;
             }
         }
 
-        public Form2()
+        public LogForm()
         {
             InitializeComponent();
             InitList();
+        }
+
+        private void LogForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Logger.Info(Util.MainThread, "日志信息窗体关闭");
+            Util.LogForm = null;
+            GC.Collect();
         }
 
         private void Form2_SizeChanged(object sender, EventArgs e)
@@ -42,7 +49,7 @@ namespace 文件夹病毒专杀工具
             if (InvokeRequired)
             {
                 InitListCallback d = new InitListCallback(InitList);
-                Invoke(d);
+                BeginInvoke(d);
             }
             else
             {
@@ -63,7 +70,7 @@ namespace 文件夹病毒专杀工具
 
         private void label2_Click(object sender, EventArgs e)
         {
-            RefreshForm2();
+            RefreshContent();
         }
 
         private void RefreshTextBox()
@@ -75,7 +82,7 @@ namespace 文件夹病毒专杀工具
             }
         }
 
-        public void RefreshForm2()
+        public void RefreshContent()
         {
             object obj = listBox1.SelectedItem;
             InitList();
@@ -83,21 +90,15 @@ namespace 文件夹病毒专杀工具
             RefreshTextBox();
         }
 
-        private void Form2_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Logger.Info(Util.MainThread, "日志信息窗体关闭");
-            Form1.form2 = null;
-        }
-
-        delegate void AddTextCallback(string s);
-        public void AddText(string s)
+        delegate void AddTextCallback(StringBuilder sb);
+        public void AddText(StringBuilder sb)
         {
             if (InvokeRequired)
             {
                 AddTextCallback d = new AddTextCallback(AddText);
-                Invoke(d, new object[] { s });
+                Invoke(d, new object[] { sb });
             }
-            else textBox1.Text += s + Environment.NewLine;
+            else textBox1.Text += sb;
         }
     }
 }

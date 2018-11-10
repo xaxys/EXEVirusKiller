@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace 文件夹病毒专杀工具
 {
-    public enum Status{ Unchecked, Checking, Checked }
+    public enum Status { Unchecked, Checking, Checked }
     public class USBDevice
     {
         public const int WM_DEVICECHANGE = 0x219;//U盘插入后，OS的底层会自动检测到，然后向应用程序发送“硬件设备状态改变“的消息
@@ -53,22 +53,29 @@ namespace 文件夹病毒专杀工具
                 USBDevice device = DeviceList[i];
                 if (!DriveList.Contains(device.Name))
                 {
-                    Form1.THIS.RemoveMenuItem(device.Item);
+                    if (device.State == Status.Checking)
+                        device.State = Status.Unchecked;
+                    Util.Icon.RemoveMenuItem(device.MenuItem);
                     DeviceList.Remove(device);
                 }
             }
+            GC.Collect();
         }
+
+        delegate void SetItemTextCallback(string s);
 
         public string Name;
         public DirectoryInfo RootDir;
-        public ToolStripMenuItem Item;
+        public ToolStripMenuItem MenuItem;
         public string Caption;
         private int VirusNum;
         private Status state;
-        private Status State {
+        private Status State
+        {
             get { return state; }
             set
             {
+                state = value;
                 string info = null;
                 switch (value)
                 {
@@ -82,13 +89,12 @@ namespace 文件夹病毒专杀工具
                         info = "在文件浏览器中打开";
                         break;
                 }
-                if (Form1.THIS.InvokeRequired)
+                if (Util.Icon.InvokeRequired)
                 {
-                    SetItemTextCallback d = new SetItemTextCallback((string s) => { Item.ToolTipText = s; });
-                    Form1.THIS.Invoke(d, new object[] { info });
+                    SetItemTextCallback d = (string s) => MenuItem.ToolTipText = s;
+                    Util.Icon.Invoke(d, info);
                 }
-                else Item.ToolTipText = info;
-                state = value;
+                else MenuItem.ToolTipText = info;
             }
         }
 
@@ -97,13 +103,12 @@ namespace 文件夹病毒专杀工具
             Name = drive.Name;
             RootDir = drive.RootDirectory;
             Caption = drive.VolumeLabel + "(" + drive.Name + ")";
-            Item = new ToolStripMenuItem(Caption);
-            Item.Click += Item_Click;
-            Form1.THIS.AddMenuItem(Item);
+            MenuItem = new ToolStripMenuItem(Caption);
+            MenuItem.Click += Item_Click;
+            Util.Icon.AddMenuItem(MenuItem);
             VirusNum = 0;
             State = Status.Unchecked;
-
-            if (Form1.THIS.自动扫描U盘) RunSearch();
+            if (Util.Icon.自动扫描U盘) RunSearch();
         }
 
         private void Item_Click(object sender, EventArgs e)
@@ -117,103 +122,26 @@ namespace 文件夹病毒专杀工具
                     if (device.State == Status.Unchecked)
                         device.RunSearch();
                     else
-                    {
                         System.Diagnostics.Process.Start(device.RootDir.FullName);
-                    }
                 }
             }
         }
 
-        delegate void SetItemTextCallback(string s);
         public void RunSearch()
         {
-            Logger.Info(Util.MainThread, "启动" + Name + "查杀线程");
-            Thread thread = new Thread(new ThreadStart(StartSearch));
-            thread.Name = Name + "查杀线程";
-            thread.IsBackground = true;
-            thread.Start();
+            State = Status.Checking;
+            Killer USBKiller = new Killer(Caption);
+            USBKiller.RootDir = RootDir.FullName;
+            USBKiller.SetProcessBarMethod = (int v) => MenuItem.Text = Caption + string.Format(" [{0}%]", v);
+            USBKiller.FinishCheckMethod = FinishCheck;
+            VirusNum = USBKiller.Run();
         }
 
-        private void StartSearch()
+        private void FinishCheck()
         {
-            State = Status.Checking;
-            SetItemTextCallback d = new SetItemTextCallback((string s) => { Item.Text = s; });
-            Logger.Info(Caption, "开始自动查杀" + Name);
-            Form1.THIS.Invoke(d, new object[] { Caption + " [正在扫描]" });
-            if (!Util.isRun) Form1.THIS.AddList("开始自动查杀" + Name);
-            SearchDir(RootDir.FullName);
-            Logger.Info(Caption, Name + "查杀完成！搞定了" + VirusNum + "个病毒");
-            if (!Util.isRun) Form1.THIS.AddList(Name + "查杀完成！搞定了" + VirusNum + "个病毒");
-            Form1.THIS.Invoke(d, new object[] { Caption + " [已扫描]" });
-            Form1.THIS.ShowTips(VirusNum, Name);
+            MenuItem.Text = Caption + " [已扫描]";
+            Util.Icon.ShowTips(VirusNum, Name);
             State = Status.Checked;
         }
-        public void SearchDir(string path)
-        {
-            if (!path.EndsWith(Util.Separator.ToString())) path += Util.Separator;
-            HashSet<string> list = new HashSet<string>();
-
-            DirectoryInfo theFolder = new DirectoryInfo(path);
-            DirectoryInfo[] theFolders = null;
-            try { theFolders = theFolder.GetDirectories(); }
-            catch (Exception e) {
-                Logger.Warn(Caption, e);
-                return;
-            }
-
-            //遍历文件夹及子文件夹
-            foreach (DirectoryInfo NextDir in theFolders)
-            {
-                if (NextDir.Attributes.IsSystem())
-                    list.Add(NextDir.Name);
-                SearchDir(NextDir.FullName);
-            }
-
-            //查杀病毒文件
-            FileInfo[] theFiles = null;
-            foreach (string Extension in Util.ExtensionList)
-            {
-                try { theFiles = theFolder.GetFiles(Extension, SearchOption.TopDirectoryOnly); }
-                catch (Exception e)
-                {
-                    Logger.Warn(Caption, e);
-                    return;
-                }
-                foreach (FileInfo NextFile in theFiles)
-                {
-                    string s = NextFile.Name.Substring(0, NextFile.Name.Length - 4).TrimEnd();
-                    if (list.Contains(s))
-                    {
-                        AddDeleteInfo(NextFile.FullName);
-                        NextFile.Delete();
-                        try { File.SetAttributes(path + s, Util.NormalDir); }
-                        catch (Exception e)
-                        {
-                            Logger.Warn(Caption, e);
-                        }
-                    }
-                }
-            }
-
-            foreach (string theName in Util.SystemFolder)
-            {
-                if (Directory.Exists(path + theName))
-                    try { File.SetAttributes(path + theName, Util.SystemHiddenDir); }
-                    catch (Exception e)
-                    {
-                        Logger.Warn(Caption, e);
-                    }
-            }
-        }
-        private void AddDeleteInfo(string s)
-        {
-            if (VirusNum == 0)
-                Form1.THIS.AddList(Name + "已删除：");
-            Form1.THIS.AddList("> " + s);
-            Logger.Info(Caption, "删除" + s);
-            Logger.Info("删除列表", s);
-            VirusNum++;
-        }
-
     }
 }
