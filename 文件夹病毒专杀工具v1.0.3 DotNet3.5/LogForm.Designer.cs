@@ -28,14 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LogForm));
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.loggerBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.loggerBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // listBox1
@@ -102,7 +99,6 @@
             this.Text = "日志信息";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LogForm_FormClosed);
             this.SizeChanged += new System.EventHandler(this.Form2_SizeChanged);
-            ((System.ComponentModel.ISupportInitialize)(this.loggerBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -114,6 +110,5 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.BindingSource loggerBindingSource;
     }
 }

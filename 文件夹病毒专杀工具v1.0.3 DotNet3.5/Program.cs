@@ -22,6 +22,7 @@ namespace 文件夹病毒专杀工具
             {
                 Util.Icon = new Icon();
                 Application.Run();
+                mutex.ReleaseMutex();
             }
             else
             {

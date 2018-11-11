@@ -54,7 +54,9 @@ namespace 文件夹病毒专杀工具
                 if (!DriveList.Contains(device.Name))
                 {
                     if (device.State == Status.Checking)
-                        device.State = Status.Unchecked;
+                    {
+                        device.USBKiller.Abort = true;
+                    }
                     Util.Icon.RemoveMenuItem(device.MenuItem);
                     DeviceList.Remove(device);
                 }
@@ -67,6 +69,7 @@ namespace 文件夹病毒专杀工具
         public string Name;
         public DirectoryInfo RootDir;
         public ToolStripMenuItem MenuItem;
+        Killer USBKiller;
         public string Caption;
         private int VirusNum;
         private Status state;
@@ -102,12 +105,17 @@ namespace 文件夹病毒专杀工具
         {
             Name = drive.Name;
             RootDir = drive.RootDirectory;
-            Caption = drive.VolumeLabel + "(" + drive.Name + ")";
+            Caption = drive.VolumeLabel == "" ? "可移动磁盘" : drive.VolumeLabel;
+            Caption += "(" + drive.Name + ")";
             MenuItem = new ToolStripMenuItem(Caption);
             MenuItem.Click += Item_Click;
             Util.Icon.AddMenuItem(MenuItem);
             VirusNum = 0;
             State = Status.Unchecked;
+            USBKiller = new Killer(Caption);
+            USBKiller.RootDir = RootDir.FullName;
+            USBKiller.SetProcessBarMethod = (int v) => MenuItem.Text = Caption + string.Format(" [{0}%]", v);
+            USBKiller.FinishCheckMethod = FinishCheck;
             if (Util.Icon.自动扫描U盘) RunSearch();
         }
 
@@ -130,10 +138,6 @@ namespace 文件夹病毒专杀工具
         public void RunSearch()
         {
             State = Status.Checking;
-            Killer USBKiller = new Killer(Caption);
-            USBKiller.RootDir = RootDir.FullName;
-            USBKiller.SetProcessBarMethod = (int v) => MenuItem.Text = Caption + string.Format(" [{0}%]", v);
-            USBKiller.FinishCheckMethod = FinishCheck;
             VirusNum = USBKiller.Run();
         }
 
@@ -142,6 +146,8 @@ namespace 文件夹病毒专杀工具
             MenuItem.Text = Caption + " [已扫描]";
             Util.Icon.ShowTips(VirusNum, Name);
             State = Status.Checked;
+            USBKiller = null;
+            GC.Collect();
         }
     }
 }

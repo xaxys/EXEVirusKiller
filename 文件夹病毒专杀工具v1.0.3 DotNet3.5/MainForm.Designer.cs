@@ -200,9 +200,9 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(10, 219);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(215, 12);
+            this.label6.Size = new System.Drawing.Size(269, 12);
             this.label6.TabIndex = 13;
-            this.label6.Text = "GNU GPLv3 Copyright (C) 2018 By xa.";
+            this.label6.Text = "Copyright (C) 2018 xa. Licensed in GNU GPLv3";
             // 
             // pictureBox1
             // 
@@ -235,6 +235,7 @@
             this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "文件夹病毒专杀工具 v1.0.3";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
