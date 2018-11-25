@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace 文件夹病毒专杀工具
@@ -11,7 +12,7 @@ namespace 文件夹病毒专杀工具
     {
         static readonly FileAttributes NormalDir = FileAttributes.Normal | FileAttributes.Directory;
         static readonly FileAttributes SystemHiddenDir = FileAttributes.System | FileAttributes.Hidden | FileAttributes.Directory;
-        static readonly List<string> SystemFolder = new List<string>()
+        static readonly string[] SystemFolder =
         {
             "System Volume Information",
             "$RECYCLE.BIN",
@@ -20,8 +21,13 @@ namespace 文件夹病毒专杀工具
         };
         static readonly string[] ExtensionList =
         {
-            "*.exe",
-            "*.scr"
+            ".exe",
+            ".scr"
+        };
+        static readonly string[] ExtraVirus =
+        {
+            "^Data Administrator.exe$",
+            "^New Folder([' ']?[\\(\\（][0-9]+[\\)\\）][' ']?)?.scr$"
         };
 
         void Invoke(Delegate d, params object[] obj)
@@ -98,8 +104,8 @@ namespace 文件夹病毒专杀工具
                 Logger.Info(ThreadName, ThreadName + "线程被终止");
                 Invoke(AddListMethod, ThreadName + "线程被终止");
             }
-            Logger.Info(ThreadName, RootDir + "查杀完成！搞定了" + VirusNum + "个病毒");
-            Invoke(AddListMethod, RootDir + "查杀完成！搞定了" + VirusNum + "个病毒");
+            Logger.Info(ThreadName, RootDir + " 查杀完成！搞定了" + VirusNum + "个病毒");
+            Invoke(AddListMethod, RootDir + " 查杀完成！搞定了" + VirusNum + "个病毒");
             Invoke(FinishCheckMethod);
         }
 
@@ -154,10 +160,15 @@ namespace 文件夹病毒专杀工具
                 }
 
                 //查杀病毒文件
+                List<FileInfo> FileList = new List<FileInfo>();
                 FileInfo[] theFiles = null;
                 foreach (string Extension in ExtensionList)
                 {
-                    try { theFiles = theFolder.GetFiles(Extension, SearchOption.TopDirectoryOnly); }
+                    try
+                    {
+                        theFiles = theFolder.GetFiles("*" + Extension, SearchOption.TopDirectoryOnly);
+                        FileList.AddRange(new List<FileInfo>(theFiles));
+                    }
                     catch (Exception e) { AddExceptionInfo(e); return; }
                     foreach (FileInfo NextFile in theFiles)
                     {
@@ -175,6 +186,25 @@ namespace 文件夹病毒专杀工具
                     }
                 }
 
+                //清除多余病毒
+                if (VirusNum != 0)
+                {
+                    foreach (string theRegex in ExtraVirus)
+                    {
+                        Regex regex = new Regex(theRegex);
+                        foreach (FileInfo File in FileList)
+                        {
+                            var m = regex.Match(File.Name);
+                            if (m.Success)
+                            {
+                                AddDeleteInfo(File.FullName);
+                                File.Delete();
+                            }
+                        }
+                    }
+                }
+
+                //隐藏系统文件夹
                 foreach (string theName in SystemFolder)
                 {
                     if (Directory.Exists(path + theName))
