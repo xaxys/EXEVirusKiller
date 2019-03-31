@@ -81,7 +81,14 @@ namespace 文件夹病毒专杀工具
             if ((string)listBox1.SelectedItem == key)
             {
                 textBox1.Text += sb;
+                textBox1.SelectionStart = textBox1.Text.Length; //设定光标位置
+                textBox1.ScrollToCaret(); //滚动到光标处
             }
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(Logger.LogPath);
         }
     }
 }

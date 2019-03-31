@@ -112,10 +112,13 @@ namespace 文件夹病毒专杀工具
             Util.Icon.AddMenuItem(MenuItem);
             VirusNum = 0;
             State = Status.Unchecked;
-            USBKiller = new Killer(Caption);
-            USBKiller.RootDir = RootDir.FullName;
-            USBKiller.SetProcessBarMethod = (int v) => MenuItem.Text = Caption + string.Format(" [{0}%]", v);
-            USBKiller.FinishCheckMethod = FinishCheck;
+            USBKiller = new Killer(Caption)
+            {
+                RootDir = RootDir.FullName,
+                SetProcessBarMethod = (int v) => MenuItem.Text = Caption + string.Format(" [{0}%]", v),
+                SetVirusNumMethod = (int v) => VirusNum = v,
+                FinishCheckMethod = FinishCheck
+            };
             if (Util.Icon.自动扫描U盘) RunSearch();
         }
 
@@ -138,7 +141,7 @@ namespace 文件夹病毒专杀工具
         public void RunSearch()
         {
             State = Status.Checking;
-            VirusNum = USBKiller.Run();
+            USBKiller.Run();
         }
 
         private void FinishCheck()

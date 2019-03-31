@@ -26,8 +26,8 @@ namespace 文件夹病毒专杀工具
         };
         static readonly string[] ExtraVirus =
         {
-            "^Data Administrator.exe$",
-            "^New Folder([' ']?[\\(\\（][0-9]+[\\)\\）][' ']?)?.scr$"
+            "Data Administrator.exe",
+            "New Folder*.scr"
         };
 
         void Invoke(Delegate d, params object[] obj)
@@ -39,10 +39,12 @@ namespace 文件夹病毒专杀工具
         public delegate void AddListCallback(object obj);
         public delegate void SetLabelCallback(string s);
         public delegate void FinishCheckCallback();
+        public delegate void SetVirusNumCallback(int v);
         public SetProcessBarCallback SetProcessBarMethod = null;
         public AddListCallback AddListMethod = null;
         public SetLabelCallback SetLabelMethod = null;
         public FinishCheckCallback FinishCheckMethod = null;
+        public SetVirusNumCallback SetVirusNumMethod = null;
 
         public string RootDir;
         public string ThreadName;
@@ -51,8 +53,8 @@ namespace 文件夹病毒专杀工具
         bool SubFolder = true;
         bool FixFolder = false;
         bool FuzzyCheck = false;
-        int VirusNum = 0;
         double progress = 0;
+        int VirusNum = 0;
 
         double Progress
         {
@@ -77,7 +79,7 @@ namespace 文件夹病毒专杀工具
             FuzzyCheck = c;
         }
 
-        public int Run()
+        public void Run()
         {
             Logger.Info(Util.MainThread, "启动" + ThreadName + "线程");
             Thread thread = new Thread(new ThreadStart(StartSearch))
@@ -86,7 +88,6 @@ namespace 文件夹病毒专杀工具
                 IsBackground = true
             };
             thread.Start();
-            return VirusNum;
         }
 
         void StartSearch()
@@ -106,6 +107,7 @@ namespace 文件夹病毒专杀工具
             }
             Logger.Info(ThreadName, RootDir + " 查杀完成！搞定了" + VirusNum + "个病毒");
             Invoke(AddListMethod, RootDir + " 查杀完成！搞定了" + VirusNum + "个病毒");
+            Invoke(SetVirusNumMethod, VirusNum);
             Invoke(FinishCheckMethod);
         }
 
@@ -155,20 +157,13 @@ namespace 文件夹病毒专杀工具
                     }
                     if (FuzzyCheck || NextDir.Attributes.IsSystem())
                         list.Add(NextDir.Name);
-                    if (SubFolder) SearchDir(path + NextDir.Name + Util.Separator, step);
-                    if (step > 1e-3) Progress = ProgressNow + step * i++;
                 }
 
                 //查杀病毒文件
-                List<FileInfo> FileList = new List<FileInfo>();
                 FileInfo[] theFiles = null;
                 foreach (string Extension in ExtensionList)
                 {
-                    try
-                    {
-                        theFiles = theFolder.GetFiles("*" + Extension, SearchOption.TopDirectoryOnly);
-                        FileList.AddRange(new List<FileInfo>(theFiles));
-                    }
+                    try { theFiles = theFolder.GetFiles("*" + Extension, SearchOption.TopDirectoryOnly); }
                     catch (Exception e) { AddExceptionInfo(e); return; }
                     foreach (FileInfo NextFile in theFiles)
                     {
@@ -187,19 +182,16 @@ namespace 文件夹病毒专杀工具
                 }
 
                 //清除多余病毒
-                if (VirusNum != 0)
+                foreach (string Name in ExtraVirus)
                 {
-                    foreach (string theRegex in ExtraVirus)
+                    try { theFiles = theFolder.GetFiles(Name, SearchOption.TopDirectoryOnly); }
+                    catch (Exception e) { AddExceptionInfo(e); return; }
+                    foreach (FileInfo NextFile in theFiles)
                     {
-                        Regex regex = new Regex(theRegex);
-                        foreach (FileInfo File in FileList)
+                        if ((NextFile.Length >> 4) == (49664 >> 4) || (NextFile.Length >> 10) == 665)
                         {
-                            var m = regex.Match(File.Name);
-                            if (m.Success)
-                            {
-                                AddDeleteInfo(File.FullName);
-                                File.Delete();
-                            }
+                            AddDeleteInfo(NextFile.FullName);
+                            NextFile.Delete();
                         }
                     }
                 }
@@ -211,6 +203,17 @@ namespace 文件夹病毒专杀工具
                     {
                         try { File.SetAttributes(path + theName, SystemHiddenDir); }
                         catch (Exception e) { AddExceptionInfo(e); }
+                    }
+                }
+
+                //扫描子文件夹
+                if (SubFolder)
+                {
+                    foreach (DirectoryInfo NextDir in theFolders)
+                    {
+                        if (Abort) break;
+                        SearchDir(path + NextDir.Name + Util.Separator, step);
+                        if (step > 1e-3) Progress = ProgressNow + step * i++;
                     }
                 }
             }

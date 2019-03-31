@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -22,6 +23,8 @@ namespace 文件夹病毒专杀工具
             notifyIcon1.Visible = true;
             StaticItemNum = contextMenuStrip1.Items.Count;
             BeginInvoke(new Callback(()=>USBDevice.CheckDevice()));
+            Logger.Date = DateTime.Now.ToString(Logger.DateFormat);
+            if (!Directory.Exists(Logger.LogPath)) Directory.CreateDirectory(Logger.LogPath);
         }
         public bool 自动扫描U盘
         {

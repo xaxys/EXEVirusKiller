@@ -8,16 +8,19 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Threading;
+using System.Runtime.InteropServices;
 
 namespace 文件夹病毒专杀工具
 {
     public partial class MainForm : Form
     {
         Killer MainKiller;
+        FolderBrowserDialog fbd;
         public MainForm()
         {
             InitializeComponent();
             MainKiller = new Killer(Util.CheckThread);
+            fbd = new FolderBrowserDialog();
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -81,10 +84,8 @@ namespace 文件夹病毒专杀工具
 
         private void button1_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
             fbd.ShowDialog();
             textBox1.Text = fbd.SelectedPath;
-            GC.Collect();
         }
 
         private void label4_Click(object sender, EventArgs e)
