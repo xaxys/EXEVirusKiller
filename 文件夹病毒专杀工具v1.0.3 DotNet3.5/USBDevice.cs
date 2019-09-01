@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace 文件夹病毒专杀工具
@@ -57,7 +55,7 @@ namespace 文件夹病毒专杀工具
                     {
                         device.USBKiller.Abort = true;
                     }
-                    Util.Icon.RemoveMenuItem(device.MenuItem);
+                    App.GetIcon().RemoveMenuItem(device.MenuItem);
                     DeviceList.Remove(device);
                 }
             }
@@ -66,12 +64,14 @@ namespace 文件夹病毒专杀工具
 
         delegate void SetItemTextCallback(string s);
 
+        public string SerialNumber;
         public string Name;
         public DirectoryInfo RootDir;
         public ToolStripMenuItem MenuItem;
         Killer USBKiller;
         public string Caption;
         private int VirusNum;
+        private int FixedNum;
         private Status state;
         private Status State
         {
@@ -92,10 +92,10 @@ namespace 文件夹病毒专杀工具
                         info = "在文件浏览器中打开";
                         break;
                 }
-                if (Util.Icon.InvokeRequired)
+                if (App.GetIcon().InvokeRequired)
                 {
                     SetItemTextCallback d = (string s) => MenuItem.ToolTipText = s;
-                    Util.Icon.Invoke(d, info);
+                    App.GetIcon().Invoke(d, info);
                 }
                 else MenuItem.ToolTipText = info;
             }
@@ -104,22 +104,25 @@ namespace 文件夹病毒专杀工具
         USBDevice(DriveInfo drive)
         {
             Name = drive.Name;
+            Name.TrimEnd('\\');
             RootDir = drive.RootDirectory;
             Caption = drive.VolumeLabel == "" ? "可移动磁盘" : drive.VolumeLabel;
-            Caption += "(" + drive.Name + ")";
+            Caption += "(" + Name + ")";
             MenuItem = new ToolStripMenuItem(Caption);
             MenuItem.Click += Item_Click;
-            Util.Icon.AddMenuItem(MenuItem);
+            App.GetIcon().AddMenuItem(MenuItem);
             VirusNum = 0;
+            FixedNum = 0;
             State = Status.Unchecked;
             USBKiller = new Killer(Caption)
             {
                 RootDir = RootDir.FullName,
                 SetProcessBarMethod = (int v) => MenuItem.Text = Caption + string.Format(" [{0}%]", v),
                 SetVirusNumMethod = (int v) => VirusNum = v,
+                SetFixedNumMethod = (int v) => FixedNum = v,
                 FinishCheckMethod = FinishCheck
             };
-            if (Util.Icon.自动扫描U盘) RunSearch();
+            if (App.GetIcon().自动扫描U盘) RunSearch();
         }
 
         private void Item_Click(object sender, EventArgs e)
@@ -130,10 +133,8 @@ namespace 文件夹病毒专杀工具
                 USBDevice device = DeviceList.GetUSBDevice(s);
                 if (device != null)
                 {
-                    if (device.State == Status.Unchecked)
-                        device.RunSearch();
-                    else
-                        System.Diagnostics.Process.Start(device.RootDir.FullName);
+                    if (device.State == Status.Unchecked) device.RunSearch();
+                    else System.Diagnostics.Process.Start(device.RootDir.FullName);
                 }
             }
         }
@@ -147,7 +148,7 @@ namespace 文件夹病毒专杀工具
         private void FinishCheck()
         {
             MenuItem.Text = Caption + " [已扫描]";
-            Util.Icon.ShowTips(VirusNum, Name);
+            App.GetIcon().ShowTips(VirusNum, FixedNum, Name);
             State = Status.Checked;
             USBKiller = null;
             GC.Collect();
