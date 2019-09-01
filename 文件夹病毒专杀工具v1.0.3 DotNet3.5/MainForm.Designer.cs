@@ -101,6 +101,8 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
+            this.checkBox1.Checked = true;
+            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox1.Font = new System.Drawing.Font("宋体", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.checkBox1.Location = new System.Drawing.Point(12, 114);
             this.checkBox1.Name = "checkBox1";
@@ -202,7 +204,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(269, 12);
             this.label6.TabIndex = 13;
-            this.label6.Text = "Copyright (C) 2018 xa. Licensed in GNU GPLv3";
+            this.label6.Text = "Copyright (C) 2019 xa. Licensed in GNU GPLv3";
             // 
             // pictureBox1
             // 

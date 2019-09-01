@@ -14,19 +14,18 @@ namespace 文件夹病毒专杀工具
 {
     public partial class MainForm : Form
     {
-        Killer MainKiller;
+        Killer MainKiller = null;
         FolderBrowserDialog fbd;
         public MainForm()
         {
             InitializeComponent();
-            MainKiller = new Killer(Util.CheckThread);
             fbd = new FolderBrowserDialog();
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)//当用户点击窗体右上角X按钮或(Alt + F4)时 发生          
             {
-                if (MainKiller.IsRun)
+                if (MainKiller != null && MainKiller.IsRun)
                 {
                     MessageBox.Show("请先停止查杀！");
                     e.Cancel = true;
@@ -44,27 +43,29 @@ namespace 文件夹病毒专杀工具
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (!MainKiller.IsRun)
+            if (MainKiller != null && MainKiller.IsRun)
             {
+                MainKiller.Abort = true;
+                Logger.Info(Util.MainThread, "终止主查杀线程");
+            }
+            else {
                 button2.Text = "停止扫描";
                 button2.BackColor = Util.huang;
                 listBox1.Items.Clear();
                 ShowListBox();
                 SwitchLabel(true);
 
+                MainKiller = new Killer(Util.CheckThread)
+                {
+                    RootDir = textBox1.Text,
+                    SetLabelMethod = (string s) => label3.Text = s,
+                    SetProcessBarMethod = (int v) => progressBar1.Value = v,
+                    AddListMethod = AddList,
+                    FinishCheckMethod = FinishCheck
+                };
                 MainKiller.SetOption(checkBox1.Checked, checkBox2.Checked, checkBox3.Checked);
-                MainKiller.RootDir = textBox1.Text;
-                MainKiller.SetLabelMethod = (string s) => label3.Text = s;
-                MainKiller.SetProcessBarMethod = (int v) => progressBar1.Value = v;
-                MainKiller.AddListMethod = AddList;
-                MainKiller.FinishCheckMethod = FinishCheck;
                 MainKiller.Run();
-            }
-            else
-            {
-                MainKiller.Abort = true;
-                Logger.Info(Util.MainThread, "终止主查杀线程");
-            }
+            } 
         }
 
         private void checkBox3_MouseHover(object sender, EventArgs e)
@@ -121,7 +122,7 @@ namespace 文件夹病毒专杀工具
 
         private void CheckPath()
         {
-            if (!MainKiller.IsRun)
+            if (MainKiller == null || !MainKiller.IsRun)
             {
                 if (Directory.Exists(textBox1.Text))
                 {

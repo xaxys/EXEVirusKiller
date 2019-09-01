@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -22,7 +21,7 @@ namespace 文件夹病毒专杀工具
 
         static void BeginInvoke(Delegate d, params object[] obj)
         {
-            if (d != null) Util.Icon.BeginInvoke(d, obj);
+            if (d != null) App.GetIcon().BeginInvoke(d, obj);
         }
 
         public static void Warn(string key, object obj)
@@ -80,11 +79,12 @@ namespace 文件夹病毒专杀工具
         {
             BeginInvoke(new Callback(() =>
             {
-                while (list[key].Length >= MaxLogLength)
+                var sb = list[key];
+                while (sb.Length >= MaxLogLength)
                 {
                     int idx = 1;
-                    while (list[key][idx] != '[') idx++;
-                    list[key].Remove(0, idx);
+                    while (sb[idx] != '[') idx++;
+                    sb.Remove(0, idx);
                 }
             }));
         }

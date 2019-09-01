@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace 文件夹病毒专杀工具
@@ -39,13 +33,9 @@ namespace 文件夹病毒专杀工具
             }
             else if (e.Button == MouseButtons.Left)
             {
-                if (Util.MainForm == null || Util.MainForm.IsDisposed)
-                {
-                    Logger.Info(Util.MainThread, "主窗体打开");
-                    Util.MainForm = new MainForm();
-                }
-                Util.MainForm.Show();
-                Util.MainForm.WindowState = FormWindowState.Normal;
+                MainForm mainForm = App.GetMainForm();
+                mainForm.Show();
+                mainForm.WindowState = FormWindowState.Normal;
             }
         }
 
@@ -77,20 +67,33 @@ namespace 文件夹病毒专杀工具
 
         private void 查看日志信息ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Util.LogForm == null || Util.LogForm.IsDisposed)
-            {
-                Logger.Info(Util.MainThread, "日志信息窗体打开");
-                Util.LogForm = new LogForm();
-            }
-            Util.LogForm.Show();
-            Util.LogForm.WindowState = FormWindowState.Normal;
+            LogForm logForm = App.GetLogForm();
+            logForm.Show();
+            logForm.WindowState = FormWindowState.Normal;
         }
-        public void ShowTips(int num, string s)
+
+        private void 关于toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if (num == 0)
-                notifyIcon1.ShowBalloonTip(1000, s + "扫描完成", "没有发现病毒", ToolTipIcon.None);
+            MessageBox.Show("文件夹病毒专杀工具v1.0.3 .Net3.5 2019.5.19\r\nCopyright (C) 2019 xa.  Licensed in GNU GPLv3.\r\nLink：https://github.com/xaxys/EXEVirusKiller",
+                "关于");
+        }
+
+        public void ShowTips(int virusnum, int fixednum, string s)
+        {
+            if (virusnum == 0)
+            {
+                notifyIcon1.Visible = true;
+                notifyIcon1.ShowBalloonTip(1000, s + "扫描完成",
+                    "没有发现病毒",
+                    ToolTipIcon.None);
+            }
             else
-                notifyIcon1.ShowBalloonTip(1000, s + "扫描完成", "清除了" + num + "个病毒", ToolTipIcon.None);
+            {
+                notifyIcon1.Visible = true;
+                notifyIcon1.ShowBalloonTip(1000, s + "扫描完成",
+                    "清除了" + virusnum + "个病毒, 修复了" + fixednum + "个文件夹",
+                    ToolTipIcon.None);
+            }
         }
 
         protected override void WndProc(ref Message m)

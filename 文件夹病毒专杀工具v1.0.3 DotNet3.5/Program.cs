@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -20,13 +18,13 @@ namespace 文件夹病毒专杀工具
             Mutex mutex = new Mutex(true, Application.ProductName, out bool ret);
             if (ret)
             {
-                Util.Icon = new Icon();
-                Application.Run();
+                Icon icon = App.GetIcon();
+                Application.Run(icon);
                 mutex.ReleaseMutex();
             }
             else
             {
-                MessageBox.Show("该程序已经启动", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("已有一个程序正在运行", "提示信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     }
