@@ -111,6 +111,7 @@
             this.Name = "LogForm";
             this.Text = "日志信息";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LogForm_FormClosed);
+            this.Load += new System.EventHandler(this.LogForm_Load);
             this.SizeChanged += new System.EventHandler(this.Form2_SizeChanged);
             this.ResumeLayout(false);
             this.PerformLayout();

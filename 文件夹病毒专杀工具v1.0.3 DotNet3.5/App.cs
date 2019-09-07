@@ -5,6 +5,8 @@
         public volatile static Icon Icon = null;
         public volatile static MainForm MainForm = null;
         public volatile static LogForm LogForm = null;
+        public volatile static AboutBox AboutBox = null;
+        public volatile static ToolsForm ToolsForm = null;
 
         public static Icon GetIcon()
         {
@@ -20,7 +22,6 @@
             if (MainForm  == null || MainForm.IsDisposed)
             {
                 MainForm = new MainForm();
-                Logger.Info(Util.MainThread, "主窗体打开");
             }
             return MainForm;
         }
@@ -30,9 +31,26 @@
             if (LogForm  == null || LogForm.IsDisposed)
             {
                 LogForm = new LogForm();
-                Logger.Info(Util.MainThread, "日志信息窗体打开");
             }
             return LogForm;
+        }
+
+        public static AboutBox GetAboutBox()
+        {
+            if (AboutBox == null || AboutBox.IsDisposed)
+            {
+                AboutBox = new AboutBox();
+            }
+            return AboutBox;
+        }
+
+        public static ToolsForm GetToolsForm()
+        {
+            if (ToolsForm == null || ToolsForm.IsDisposed)
+            {
+                ToolsForm = new ToolsForm();
+            }
+            return ToolsForm;
         }
     }
 }

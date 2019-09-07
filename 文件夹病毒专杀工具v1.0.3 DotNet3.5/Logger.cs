@@ -11,7 +11,7 @@ namespace 文件夹病毒专杀工具
         public static string DateFormat = "yyyy-MM-dd";
         public static string Date = null;
         readonly static int MaxLogLength = 10000;
-        public readonly static string LogPath = @"C:\Users\" + Environment.UserName + @"\AppData\Local\文件夹病毒专杀工具\";
+        public readonly static string LogPath = Util.ProgramPath + @"log\";
         public static StreamWriter sw = null;
         public static SortedList<string, StringBuilder> list = new SortedList<string, StringBuilder>();
         public delegate void AddTextCallback(string key, StringBuilder sb);

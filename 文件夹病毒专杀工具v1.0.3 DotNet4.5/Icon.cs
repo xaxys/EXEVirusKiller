@@ -74,8 +74,9 @@ namespace 文件夹病毒专杀工具
 
         private void 关于toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("文件夹病毒专杀工具v1.0.3 .Net3.5 2019.5.19\r\nCopyright (C) 2019 xa.  Licensed in GNU GPLv3.\r\nLink：https://github.com/xaxys/EXEVirusKiller",
-                "关于");
+            AboutBox aboutBox = App.GetAboutBox();
+            aboutBox.Show();
+            aboutBox.WindowState = FormWindowState.Normal;
         }
 
         public void ShowTips(int virusnum, int fixednum, string s)
@@ -144,6 +145,13 @@ namespace 文件夹病毒专杀工具
                 Logger.Warn(Util.MainThread, e);
             }
             base.WndProc(ref m);
+        }
+
+        private void 工具toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ToolsForm toolsForm = App.GetToolsForm();
+            toolsForm.Show();
+            toolsForm.WindowState = FormWindowState.Normal;
         }
     }
 }

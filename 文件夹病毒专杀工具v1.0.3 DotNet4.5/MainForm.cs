@@ -161,5 +161,10 @@ namespace 文件夹病毒专杀工具
             label2.Visible = f;
             label3.Visible = f;
         }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            Logger.Info(Util.MainThread, "主窗体打开");
+        }
     }
 }

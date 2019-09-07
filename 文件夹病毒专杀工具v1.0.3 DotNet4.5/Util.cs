@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
@@ -19,6 +20,7 @@ namespace 文件夹病毒专杀工具
         public static string MainThread = "主线程";
         public static string CheckThread = "主查杀";
         public static char Separator = Path.DirectorySeparatorChar;
+        public readonly static string ProgramPath = @"C:\Users\" + Environment.UserName + @"\AppData\Local\文件夹病毒专杀工具\";
 
         public static bool IsHidden(this FileAttributes attr)
         {

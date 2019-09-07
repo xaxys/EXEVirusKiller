@@ -83,5 +83,10 @@ namespace 文件夹病毒专杀工具
         {
             System.Diagnostics.Process.Start(Logger.LogPath);
         }
+
+        private void LogForm_Load(object sender, EventArgs e)
+        {
+            Logger.Info(Util.MainThread, "日志信息窗体打开");
+        }
     }
 }
