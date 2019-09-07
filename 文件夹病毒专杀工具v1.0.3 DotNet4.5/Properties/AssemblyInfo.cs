@@ -10,7 +10,7 @@ Link：https://github.com/xaxys/EXEVirusKiller
 目前实现：模糊匹配病毒、U盘插入自动查杀、开机自启")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Author: xa")]
-[assembly: AssemblyProduct("文件夹病毒专杀工具 .Net3.5")]
+[assembly: AssemblyProduct("文件夹病毒专杀工具 .Net4.5.2")]
 [assembly: AssemblyCopyright("Copyright © 2019 xa")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
