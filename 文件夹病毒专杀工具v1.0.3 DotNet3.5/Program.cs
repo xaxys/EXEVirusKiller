@@ -18,6 +18,8 @@ namespace 文件夹病毒专杀工具
             Mutex mutex = new Mutex(true, Application.ProductName, out bool ret);
             if (ret)
             {
+                Util.PromoteBackupPrivilege();
+                Util.PromoteRestorePrivilege();
                 Icon icon = App.GetIcon();
                 Application.Run(icon);
                 mutex.ReleaseMutex();

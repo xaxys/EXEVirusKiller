@@ -24,7 +24,7 @@ namespace 文件夹病毒专杀工具
             string path = Application.ExecutablePath;
             RegistryKey rk = Registry.LocalMachine;
             RegistryKey rk2 = rk.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run");
-            rk2.SetValue("FolderEXEVirusKiller", path);
+            rk2.SetValue("FolderEXEVirusKiller", "\"" + path + "\"");
             rk2.Close();
             rk.Close();
             MessageBox.Show("添加开机自启动完成", "提示");

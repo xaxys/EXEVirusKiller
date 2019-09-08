@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("文件夹病毒专杀工具")]
 [assembly: AssemblyDescription(@"Licensed in GNU GPLv3.
-Link：https://github.com/xaxys/EXEVirusKiller
+Link: https://github.com/xaxys/EXEVirusKiller
 目前实现：模糊匹配病毒、U盘插入自动查杀、开机自启")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Author: xa")]
