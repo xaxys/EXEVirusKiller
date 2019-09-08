@@ -9,4 +9,6 @@
 更新了，.Net4.5.2现在也受支持了！ ——xaxy 2019.9.1
 开机自启功能添加 ——xaxy 2019.9.7
 
-本来打算添加文滤驱动自动查找病毒来源...奈何水平和时间都不够,,,就暂时搁置了
+本来打算添加文滤驱动自动查找病毒来源...奈何水平和时间都不够...就暂时搁置了
+
+__下载链接__ [https://github.com/xaxys/EXEVirusKiller/releases](https://github.com/xaxys/EXEVirusKiller/releases)
