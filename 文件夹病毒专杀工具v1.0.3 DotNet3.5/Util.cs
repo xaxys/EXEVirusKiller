@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 
 namespace 文件夹病毒专杀工具
@@ -115,7 +116,7 @@ namespace 文件夹病毒专杀工具
             }
             catch (Exception e)
             {
-                Logger.Warn(Thread.CurrentThread.Name, e);
+                Logger.Warn(e);
             }
         }
 
@@ -142,8 +143,12 @@ namespace 文件夹病毒专杀工具
             }
             catch (Exception e)
             {
-                Logger.Warn(Thread.CurrentThread.Name, e);
+                Logger.Warn(e);
             }
         }
+
+        public static bool Is64BitProcess => IntPtr.Size == 8;
+
+        public static bool Is32BitProcess => IntPtr.Size == 4;
     }
 }

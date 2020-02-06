@@ -18,9 +18,17 @@ namespace 文件夹病毒专杀工具
             Mutex mutex = new Mutex(true, Application.ProductName, out bool ret);
             if (ret)
             {
+                Logger.Info(string.Format("正在启动 {0} v{1}, 版本: {2}, 64位: {3}.",
+                    Application.ProductName,
+                    Application.ProductVersion,
+                    System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(),
+                    Util.Is64BitProcess
+                    ));
                 Util.PromoteBackupPrivilege();
                 Util.PromoteRestorePrivilege();
+                App.GetHookManager().EnableHook();
                 Icon icon = App.GetIcon();
+                USBDevice.CheckDevice();
                 Application.Run(icon);
                 mutex.ReleaseMutex();
             }

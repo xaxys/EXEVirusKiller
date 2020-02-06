@@ -1,12 +1,25 @@
-﻿namespace 文件夹病毒专杀工具
+﻿using System;
+
+namespace 文件夹病毒专杀工具
 {
     static class App
     {
+        public volatile static Logger Logger = null;
         public volatile static Icon Icon = null;
         public volatile static MainForm MainForm = null;
         public volatile static LogForm LogForm = null;
         public volatile static AboutBox AboutBox = null;
         public volatile static ToolsForm ToolsForm = null;
+        public volatile static HookManager HookManager = null;
+
+        public static Logger GetLogger()
+        {
+            if (Logger == null)
+            {
+                Logger = new Logger();
+            }
+            return Logger;
+        }
 
         public static Icon GetIcon()
         {
@@ -51,6 +64,26 @@
                 ToolsForm = new ToolsForm();
             }
             return ToolsForm;
+        }
+
+        public static HookManager GetHookManager()
+        {
+            if (HookManager == null)
+            {
+                if (Util.Is64BitProcess)
+                {
+                    HookManager = new HookManager64();
+                }
+                else if (Util.Is32BitProcess)
+                {
+                    HookManager = new HookManager32();
+                }
+                else
+                {
+                    Logger.Info("加载HookManager时出现问题，非x86或x64");
+                }
+            }
+            return HookManager;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace 文件夹病毒专杀工具
 {
     public partial class Icon : Form
     {
-        delegate void Callback();
+        public delegate void Callback();
         private int StaticItemNum;
 
         public Icon()
@@ -16,13 +16,11 @@ namespace 文件夹病毒专杀工具
             ShowInTaskbar = false;
             notifyIcon1.Visible = true;
             StaticItemNum = contextMenuStrip1.Items.Count;
-            BeginInvoke(new Callback(()=>USBDevice.CheckDevice()));
-            Logger.Date = DateTime.Now.ToString(Logger.DateFormat);
-            if (!Directory.Exists(Logger.LogPath)) Directory.CreateDirectory(Logger.LogPath);
+            开启目录保护.Checked = App.GetHookManager().Statue;
         }
-        public bool 自动扫描U盘
+        public bool AutoScan
         {
-            get { return 自动扫描U盘ToolStripMenuItem.Checked; }
+            get { return 自动扫描U盘.Checked; }
         }
 
         private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
@@ -39,7 +37,7 @@ namespace 文件夹病毒专杀工具
             }
         }
 
-        private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void 退出_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
@@ -58,21 +56,21 @@ namespace 文件夹病毒专杀工具
                 aToolStripMenuItem.Visible = false;
         }
 
-        private void 自动扫描U盘ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void 自动扫描U盘_Click(object sender, EventArgs e)
         {
-            if (自动扫描U盘ToolStripMenuItem.Checked)
-                自动扫描U盘ToolStripMenuItem.Checked = false;
-            else 自动扫描U盘ToolStripMenuItem.Checked = true;
+            if (自动扫描U盘.Checked)
+                自动扫描U盘.Checked = false;
+            else 自动扫描U盘.Checked = true;
         }
 
-        private void 查看日志信息ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void 查看日志信息_Click(object sender, EventArgs e)
         {
             LogForm logForm = App.GetLogForm();
             logForm.Show();
             logForm.WindowState = FormWindowState.Normal;
         }
 
-        private void 关于toolStripMenuItem1_Click(object sender, EventArgs e)
+        private void 关于_Click(object sender, EventArgs e)
         {
             AboutBox aboutBox = App.GetAboutBox();
             aboutBox.Show();
@@ -108,7 +106,7 @@ namespace 文件夹病毒专杀工具
                         case USBDevice.WM_DEVICECHANGE:
                             break;
                         case USBDevice.DBT_DEVICEARRIVAL://U盘插入
-                            Logger.Info(Util.MainThread, "检测到U盘已插入");
+                            Logger.Info("检测到U盘已插入");
                             USBDevice.CheckDevice();
                             break;
                         case USBDevice.DBT_CONFIGCHANGECANCELED:
@@ -123,7 +121,7 @@ namespace 文件夹病毒专杀工具
                             break;
                         case USBDevice.DBT_DEVICEREMOVECOMPLETE: //U盘卸载
                             USBDevice.RemoveDevice();
-                            Logger.Info(Util.MainThread, "检测到U盘已卸载");
+                            Logger.Info("检测到U盘已卸载");
                             break;
                         case USBDevice.DBT_DEVICEREMOVEPENDING:
                             break;
@@ -147,11 +145,25 @@ namespace 文件夹病毒专杀工具
             base.WndProc(ref m);
         }
 
-        private void 工具toolStripMenuItem1_Click(object sender, EventArgs e)
+        private void 工具_Click(object sender, EventArgs e)
         {
             ToolsForm toolsForm = App.GetToolsForm();
             toolsForm.Show();
             toolsForm.WindowState = FormWindowState.Normal;
+        }
+
+        private void 开启目录保护_Click(object sender, EventArgs e)
+        {
+            HookManager hookManager = App.GetHookManager();
+            if (hookManager.Statue == false)
+            {
+                App.GetHookManager().EnableHook();
+            }
+            else
+            {
+                App.GetHookManager().DisableHook();
+            }
+            开启目录保护.Checked = hookManager.Statue;
         }
     }
 }

@@ -107,12 +107,12 @@ namespace 文件夹病毒专杀工具
 
         private void AboutBox_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Logger.Info(Util.MainThread, "关于窗口关闭");
+            Logger.Info("关于窗口关闭");
         }
 
         private void AboutBox_Load(object sender, EventArgs e)
         {
-            Logger.Info(Util.MainThread, "关于窗口打开");
+            Logger.Info("关于窗口打开");
         }
     }
 }

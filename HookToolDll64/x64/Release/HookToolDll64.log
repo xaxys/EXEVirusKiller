@@ -1,0 +1,21 @@
+﻿C:\软件\Microsoft Visual Studio 2019 Enterprise\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(438,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+  pch.cpp
+  dllmain.cpp
+D:\C#\文件夹病毒专杀工具\packages\EasyHookNativePackage.2.7.7097\build\native\include\easyhook.h(39,1): warning C4005:  “NTDDI_VERSION”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\sdkddkver.h(227): message :  参见“NTDDI_VERSION”的前一个定义
+D:\C#\文件夹病毒专杀工具\packages\EasyHookNativePackage.2.7.7097\build\native\include\easyhook.h(40,1): warning C4005:  “_WIN32_WINNT”: 宏重定义
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\sdkddkver.h(217): message :  参见“_WIN32_WINNT”的前一个定义
+D:\C#\文件夹病毒专杀工具\HookToolDll\dllmain.cpp(53,1): warning C4273:  “SetCallBack”: dll 链接不一致
+D:\C#\文件夹病毒专杀工具\HookToolDll\dllmain.h(5,46): message :  参见“SetCallBack”的前一个定义
+D:\C#\文件夹病毒专杀工具\HookToolDll\dllmain.cpp(161,48): warning C4273:  “Install”: dll 链接不一致
+D:\C#\文件夹病毒专杀工具\HookToolDll\dllmain.h(3,37): message :  参见“Install”的前一个定义
+D:\C#\文件夹病毒专杀工具\HookToolDll\dllmain.cpp(168,50): warning C4273:  “UnInstall”: dll 链接不一致
+D:\C#\文件夹病毒专杀工具\HookToolDll\dllmain.h(4,37): message :  参见“UnInstall”的前一个定义
+D:\C#\文件夹病毒专杀工具\HookToolDll\dllmain.cpp(176,1): warning C4273:  “NativeInjectionEntryPoint”: dll 链接不一致
+D:\C#\文件夹病毒专杀工具\HookToolDll\dllmain.h(6,48): message :  参见“NativeInjectionEntryPoint”的前一个定义
+    正在创建库 ..\Release\HookToolDll64.lib 和对象 ..\Release\HookToolDll64.exp
+  正在生成代码
+  Previous IPDB not found, fall back to full compilation.
+  All 85 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  已完成代码的生成
+  HookToolDll64.vcxproj -> D:\C#\文件夹病毒专杀工具\HookToolDll64\..\Release\HookToolDll64.dll

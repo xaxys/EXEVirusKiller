@@ -32,11 +32,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Icon));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.aToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
-            this.自动扫描U盘ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.查看日志信息ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.工具toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.关于toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.自动扫描U盘 = new System.Windows.Forms.ToolStripMenuItem();
+            this.开启目录保护 = new System.Windows.Forms.ToolStripMenuItem();
+            this.查看日志信息 = new System.Windows.Forms.ToolStripMenuItem();
+            this.工具 = new System.Windows.Forms.ToolStripMenuItem();
+            this.关于 = new System.Windows.Forms.ToolStripMenuItem();
+            this.退出 = new System.Windows.Forms.ToolStripMenuItem();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -45,14 +46,15 @@
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aToolStripMenuItem,
-            this.自动扫描U盘ToolStripMenuItem,
-            this.查看日志信息ToolStripMenuItem,
-            this.工具toolStripMenuItem1,
-            this.关于toolStripMenuItem1,
-            this.退出ToolStripMenuItem});
+            this.自动扫描U盘,
+            this.开启目录保护,
+            this.查看日志信息,
+            this.工具,
+            this.关于,
+            this.退出});
             this.contextMenuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(149, 120);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(149, 142);
             // 
             // aToolStripMenuItem
             // 
@@ -60,42 +62,49 @@
             this.aToolStripMenuItem.Size = new System.Drawing.Size(145, 6);
             this.aToolStripMenuItem.Visible = false;
             // 
-            // 自动扫描U盘ToolStripMenuItem
+            // 自动扫描U盘
             // 
-            this.自动扫描U盘ToolStripMenuItem.Checked = true;
-            this.自动扫描U盘ToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.自动扫描U盘ToolStripMenuItem.Name = "自动扫描U盘ToolStripMenuItem";
-            this.自动扫描U盘ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.自动扫描U盘ToolStripMenuItem.Text = "自动扫描U盘";
-            this.自动扫描U盘ToolStripMenuItem.Click += new System.EventHandler(this.自动扫描U盘ToolStripMenuItem_Click);
+            this.自动扫描U盘.Checked = true;
+            this.自动扫描U盘.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.自动扫描U盘.Name = "自动扫描U盘";
+            this.自动扫描U盘.Size = new System.Drawing.Size(148, 22);
+            this.自动扫描U盘.Text = "自动扫描U盘";
+            this.自动扫描U盘.Click += new System.EventHandler(this.自动扫描U盘_Click);
             // 
-            // 查看日志信息ToolStripMenuItem
+            // 开启目录保护
             // 
-            this.查看日志信息ToolStripMenuItem.Name = "查看日志信息ToolStripMenuItem";
-            this.查看日志信息ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.查看日志信息ToolStripMenuItem.Text = "查看日志信息";
-            this.查看日志信息ToolStripMenuItem.Click += new System.EventHandler(this.查看日志信息ToolStripMenuItem_Click);
+            this.开启目录保护.Name = "开启目录保护";
+            this.开启目录保护.Size = new System.Drawing.Size(148, 22);
+            this.开启目录保护.Text = "开启目录保护";
+            this.开启目录保护.Click += new System.EventHandler(this.开启目录保护_Click);
             // 
-            // 工具toolStripMenuItem1
+            // 查看日志信息
             // 
-            this.工具toolStripMenuItem1.Name = "工具toolStripMenuItem1";
-            this.工具toolStripMenuItem1.Size = new System.Drawing.Size(148, 22);
-            this.工具toolStripMenuItem1.Text = "工具";
-            this.工具toolStripMenuItem1.Click += new System.EventHandler(this.工具toolStripMenuItem1_Click);
+            this.查看日志信息.Name = "查看日志信息";
+            this.查看日志信息.Size = new System.Drawing.Size(148, 22);
+            this.查看日志信息.Text = "查看日志信息";
+            this.查看日志信息.Click += new System.EventHandler(this.查看日志信息_Click);
             // 
-            // 关于toolStripMenuItem1
+            // 工具
             // 
-            this.关于toolStripMenuItem1.Name = "关于toolStripMenuItem1";
-            this.关于toolStripMenuItem1.Size = new System.Drawing.Size(148, 22);
-            this.关于toolStripMenuItem1.Text = "关于";
-            this.关于toolStripMenuItem1.Click += new System.EventHandler(this.关于toolStripMenuItem1_Click);
+            this.工具.Name = "工具";
+            this.工具.Size = new System.Drawing.Size(148, 22);
+            this.工具.Text = "工具";
+            this.工具.Click += new System.EventHandler(this.工具_Click);
             // 
-            // 退出ToolStripMenuItem
+            // 关于
             // 
-            this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.退出ToolStripMenuItem.Text = "退出";
-            this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
+            this.关于.Name = "关于";
+            this.关于.Size = new System.Drawing.Size(148, 22);
+            this.关于.Text = "关于";
+            this.关于.Click += new System.EventHandler(this.关于_Click);
+            // 
+            // 退出
+            // 
+            this.退出.Name = "退出";
+            this.退出.Size = new System.Drawing.Size(148, 22);
+            this.退出.Text = "退出";
+            this.退出.Click += new System.EventHandler(this.退出_Click);
             // 
             // notifyIcon1
             // 
@@ -122,11 +131,12 @@
 
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripSeparator aToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 自动扫描U盘ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 查看日志信息ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 自动扫描U盘;
+        private System.Windows.Forms.ToolStripMenuItem 查看日志信息;
+        private System.Windows.Forms.ToolStripMenuItem 退出;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
-        private System.Windows.Forms.ToolStripMenuItem 关于toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem 工具toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem 关于;
+        private System.Windows.Forms.ToolStripMenuItem 工具;
+        private System.Windows.Forms.ToolStripMenuItem 开启目录保护;
     }
 }

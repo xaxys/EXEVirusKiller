@@ -19,7 +19,7 @@ namespace 文件夹病毒专杀工具
         {
             Logger.AddTextMethod -= AddText;
             Logger.InitListMethod -= InitList;
-            Logger.Info(Util.MainThread, "日志信息窗体关闭");
+            Logger.Info("日志信息窗体关闭");
         }
 
         private void Form2_SizeChanged(object sender, EventArgs e)
@@ -69,11 +69,11 @@ namespace 文件夹病毒专杀工具
             RefreshTextBox();
         }
 
-        public void AddText(string key, StringBuilder sb)
+        public void AddText(string key, string s)
         {
             if ((string)listBox1.SelectedItem == key)
             {
-                textBox1.Text += sb;
+                textBox1.Text += s;
                 textBox1.SelectionStart = textBox1.Text.Length; //设定光标位置
                 textBox1.ScrollToCaret(); //滚动到光标处
             }
@@ -86,7 +86,7 @@ namespace 文件夹病毒专杀工具
 
         private void LogForm_Load(object sender, EventArgs e)
         {
-            Logger.Info(Util.MainThread, "日志信息窗体打开");
+            Logger.Info("日志信息窗体打开");
         }
     }
 }

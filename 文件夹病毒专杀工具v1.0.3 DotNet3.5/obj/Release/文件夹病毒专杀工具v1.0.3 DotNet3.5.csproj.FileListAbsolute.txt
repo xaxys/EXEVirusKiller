@@ -11,3 +11,5 @@ D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet3.5\ob
 D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet3.5\obj\Release\文件夹病毒专杀工具v1.0.3 .Net3.5.exe
 D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet3.5\obj\Release\文件夹病毒专杀工具v1.0.3 .Net3.5.pdb
 D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet3.5\obj\Release\文件夹病毒专杀工具v1.0.3 DotNet3.5.csprojAssemblyReference.cache
+D:\C#\文件夹病毒专杀工具\Release\文件夹病毒专杀工具v1.0.3 .Net3.5.exe
+D:\C#\文件夹病毒专杀工具\Release\文件夹病毒专杀工具v1.0.3 .Net3.5.pdb

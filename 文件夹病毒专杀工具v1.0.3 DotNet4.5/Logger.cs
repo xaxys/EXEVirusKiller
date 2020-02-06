@@ -6,18 +6,19 @@ using System.Threading;
 
 namespace 文件夹病毒专杀工具
 {
-    static class Logger
+    class Logger
     {
         public static string DateFormat = "yyyy-MM-dd";
         public static string Date = null;
         readonly static int MaxLogLength = 10000;
         public readonly static string LogPath = Util.ProgramPath + @"log\";
-        public static StreamWriter sw = null;
+        public StreamWriter sw = null;
         public static SortedList<string, StringBuilder> list = new SortedList<string, StringBuilder>();
         public delegate void AddTextCallback(string key, StringBuilder sb);
         public delegate void InitListCallback();
         public static AddTextCallback AddTextMethod = null;
         public static InitListCallback InitListMethod = null;
+        private SynchronizedQueue<string> queue = null;
 
         static void BeginInvoke(Delegate d, params object[] obj)
         {
@@ -25,6 +26,11 @@ namespace 文件夹病毒专杀工具
         }
 
         public static void Warn(string key, object obj)
+        {
+            App.GetLogger().warn(key, obj);
+        }
+
+        public void warn(string key, object obj)
         {
             if (!list.ContainsKey(key))
             {
@@ -46,6 +52,11 @@ namespace 文件夹病毒专杀工具
         }
 
         public static void Info(string key, string s)
+        {
+            App.GetLogger().info(key, s);
+        }
+
+        public void info(string key, string s)
         {
             if (!list.ContainsKey(key))
             {
@@ -74,34 +85,58 @@ namespace 文件夹病毒专杀工具
             return sb;
         }
 
-        delegate void Callback();
-        static void CheckLength(string key)
+        void CheckLength(string key)
         {
-            BeginInvoke(new Callback(() =>
+            var sb = list[key];
+            while (sb.Length >= MaxLogLength)
             {
-                var sb = list[key];
-                while (sb.Length >= MaxLogLength)
-                {
-                    int idx = 1;
-                    while (sb[idx] != '[') idx++;
-                    sb.Remove(0, idx);
-                }
-            }));
+                int idx = 1;
+                while (sb[idx] != '[') idx++;
+                sb.Remove(0, idx);
+            }
         }
 
-        static void AddLog(StringBuilder sb)
+        void AddLog(StringBuilder sb)
         {
-            if (DateTime.Now.ToString(DateFormat) != Date) Date = DateTime.Now.ToString(DateFormat);
-            BeginInvoke(new Callback(() =>
+            if (DateTime.Now.ToString(DateFormat) != Date)
             {
-                try {
-                    sw = new StreamWriter(LogPath + Date + ".log", true, Encoding.UTF8);
-                    sw.Write(sb);
+                Date = DateTime.Now.ToString(DateFormat);
+                sw.Close();
+                sw = new StreamWriter(LogPath + Date + ".log", true, Encoding.UTF8);
+            }
+            queue.Enqueue(sb.ToString());
+        }
+
+
+        public Logger()
+        {
+            Date = DateTime.Now.ToString(DateFormat);
+            if (!Directory.Exists(LogPath)) Directory.CreateDirectory(LogPath);
+            sw = new StreamWriter(LogPath + Date + ".log", true, Encoding.UTF8);
+            queue = new SynchronizedQueue<string>(true);
+            Thread thread = new Thread(new ThreadStart(Record))
+            {
+                Name = "日志线程",
+                IsBackground = true
+            };
+            thread.Start();
+        }
+
+        private void Record()
+        {
+            while (true)
+            {
+                string s = queue.Dequeue();
+                try
+                {
+                    sw.Write(s);
                     sw.Flush();
-                    sw.Close();
                 }
-                catch (Exception e) { Warn(Util.MainThread, e); }
-            }));
+                catch (Exception e)
+                {
+                    Warn(Util.MainThread, e);
+                }
+            }
         }
     }
 }

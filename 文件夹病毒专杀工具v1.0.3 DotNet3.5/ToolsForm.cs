@@ -20,7 +20,7 @@ namespace 文件夹病毒专杀工具
         private void button1_Click(object sender, EventArgs e)
         {
             MessageBox.Show("设置开机自启动，需要修改注册表！程序移动位置后请重新添加自启！", "提示");
-            Logger.Info(Util.MainThread, "添加开机自启动");
+            Logger.Info("添加开机自启动");
             string path = Application.ExecutablePath;
             RegistryKey rk = Registry.LocalMachine;
             RegistryKey rk2 = rk.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run");
@@ -33,7 +33,7 @@ namespace 文件夹病毒专杀工具
         private void button2_Click(object sender, EventArgs e)
         {
             MessageBox.Show("取消开机自启动，需要修改注册表", "提示");
-            Logger.Info(Util.MainThread, "取消开机自启动");
+            Logger.Info("取消开机自启动");
             string path = Application.ExecutablePath;
             RegistryKey rk = Registry.LocalMachine;
             RegistryKey rk2 = rk.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run");
@@ -45,12 +45,12 @@ namespace 文件夹病毒专杀工具
 
         private void ToolsForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Logger.Info(Util.MainThread, "工具窗口关闭");
+            Logger.Info("工具窗口关闭");
         }
 
         private void ToolsForm_Load(object sender, EventArgs e)
         {
-            Logger.Info(Util.MainThread, "工具窗口打开");
+            Logger.Info("工具窗口打开");
         }
     }
 }

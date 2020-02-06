@@ -20,7 +20,11 @@ namespace 文件夹病毒专杀工具
             {
                 Util.PromoteBackupPrivilege();
                 Util.PromoteRestorePrivilege();
+                Logger logger = App.GetLogger();
+                HookManager hookManager = App.GetHookManager();
+                hookManager.EnableHook();
                 Icon icon = App.GetIcon();
+                USBDevice.CheckDevice();
                 Application.Run(icon);
                 mutex.ReleaseMutex();
             }

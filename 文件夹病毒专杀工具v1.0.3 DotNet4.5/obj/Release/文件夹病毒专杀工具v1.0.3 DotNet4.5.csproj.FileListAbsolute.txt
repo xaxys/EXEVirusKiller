@@ -1,3 +1,10 @@
+D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet4.5\bin\Release\文件夹病毒专杀工具v1.0.3 .Net4.5.2.exe.config
+D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet4.5\bin\Release\文件夹病毒专杀工具v1.0.3 .Net4.5.2.exe
+D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet4.5\bin\Release\文件夹病毒专杀工具v1.0.3 .Net4.5.2.pdb
+D:\C#\文件夹病毒专杀工具\Release\文件夹病毒专杀工具v1.0.3 .Net4.5.2.exe.config
+D:\C#\文件夹病毒专杀工具\Release\文件夹病毒专杀工具v1.0.3 .Net4.5.2.exe
+D:\C#\文件夹病毒专杀工具\Release\文件夹病毒专杀工具v1.0.3 .Net4.5.2.pdb
+D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet4.5\obj\Release\文件夹病毒专杀工具v1.0.3 DotNet4.5.csprojAssemblyReference.cache
 D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet4.5\obj\Release\文件夹病毒专杀工具.AboutBox.resources
 D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet4.5\obj\Release\文件夹病毒专杀工具.Icon.resources
 D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet4.5\obj\Release\文件夹病毒专杀工具.LogForm.resources
@@ -6,9 +13,5 @@ D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet4.5\ob
 D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet4.5\obj\Release\文件夹病毒专杀工具.ToolsForm.resources
 D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet4.5\obj\Release\文件夹病毒专杀工具v1.0.3 DotNet4.5.csproj.GenerateResource.cache
 D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet4.5\obj\Release\文件夹病毒专杀工具v1.0.3 DotNet4.5.csproj.CoreCompileInputs.cache
-D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet4.5\bin\Release\文件夹病毒专杀工具v1.0.3 .Net4.5.2.exe.config
-D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet4.5\bin\Release\文件夹病毒专杀工具v1.0.3 .Net4.5.2.exe
-D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet4.5\bin\Release\文件夹病毒专杀工具v1.0.3 .Net4.5.2.pdb
 D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet4.5\obj\Release\文件夹病毒专杀工具v1.0.3 .Net4.5.2.exe
 D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet4.5\obj\Release\文件夹病毒专杀工具v1.0.3 .Net4.5.2.pdb
-D:\C#\文件夹病毒专杀工具\文件夹病毒专杀工具v1.0.3 DotNet4.5\obj\Release\文件夹病毒专杀工具v1.0.3 DotNet4.5.csprojAssemblyReference.cache

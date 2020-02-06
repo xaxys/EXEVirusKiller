@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Threading;
 using System.Runtime.InteropServices;
+using System.Reflection;
 
 namespace 文件夹病毒专杀工具
 {
@@ -19,8 +20,23 @@ namespace 文件夹病毒专杀工具
         public MainForm()
         {
             InitializeComponent();
+            this.label6.Text = AssemblyCopyright;
             fbd = new FolderBrowserDialog();
         }
+
+        public string AssemblyCopyright
+        {
+            get
+            {
+                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
+                if (attributes.Length == 0)
+                {
+                    return "";
+                }
+                return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
+            }
+        }
+
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)//当用户点击窗体右上角X按钮或(Alt + F4)时 发生          
@@ -32,12 +48,12 @@ namespace 文件夹病毒专杀工具
                 }
                 else
                 {
-                    Logger.Info(Util.MainThread, "主窗体关闭");
+                    Logger.Info("主窗体关闭");
                 }
             }
             else
             {
-                Logger.Info(Util.MainThread, e.CloseReason.ToString());
+                Logger.Info(e.CloseReason.ToString());
             }
         }
 
@@ -46,7 +62,7 @@ namespace 文件夹病毒专杀工具
             if (MainKiller != null && MainKiller.IsRun)
             {
                 MainKiller.Abort = true;
-                Logger.Info(Util.MainThread, "终止主查杀线程");
+                Logger.Info("终止主查杀线程");
             }
             else {
                 button2.Text = "停止扫描";
@@ -151,7 +167,6 @@ namespace 文件夹病毒专杀工具
             else if (obj is Exception)
             {
                 listBox1.Items.Add("[!] " + ((Exception)obj).Message);
-                Logger.Warn(Util.CheckThread, (Exception)obj);
             }
 
         }
@@ -164,7 +179,7 @@ namespace 文件夹病毒专杀工具
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            Logger.Info(Util.MainThread, "主窗体打开");
+            Logger.Info("主窗体打开");
         }
     }
 }

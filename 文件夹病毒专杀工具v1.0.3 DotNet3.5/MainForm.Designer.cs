@@ -202,9 +202,8 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(10, 219);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(269, 12);
+            this.label6.Size = new System.Drawing.Size(0, 12);
             this.label6.TabIndex = 13;
-            this.label6.Text = "Copyright (C) 2019 xa. Licensed in GNU GPLv3";
             // 
             // pictureBox1
             // 

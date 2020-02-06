@@ -122,7 +122,7 @@ namespace 文件夹病毒专杀工具
                 SetFixedNumMethod = (int v) => FixedNum = v,
                 FinishCheckMethod = FinishCheck
             };
-            if (App.GetIcon().自动扫描U盘) RunSearch();
+            if (App.GetIcon().AutoScan) RunSearch();
         }
 
         private void Item_Click(object sender, EventArgs e)
